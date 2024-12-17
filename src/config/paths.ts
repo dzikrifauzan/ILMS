@@ -27,13 +27,43 @@ export const paths = {
       path: '/dashboard',
       getHref: () => '/dashboard',
     },
+
+    // STANDARD WORK
     standardWork: {
-      path: '/standard-work',
-      getHref: () => '/standard-work',
+      creationForm: {
+        path: 'standard-work/creation-form',
+        getHref: () => 'standard-work/creation-form',
+      },
+
+      ApprovalStatus: {
+        path: 'standard-work/approval-status',
+        getHref: () => 'standard-work/approval-status',
+      },
+      SwInquiry: {
+        path: 'standard-work/sw-inquiry',
+        getHref: () => 'standard-work/sw-inquiry',
+      },
+      Yamazumi: {
+        path: 'standard-work/yamazumi',
+        getHref: () => 'standard-work/yamazumi',
+      },
     },
+
+    //MASTER DATA
+    masterData: {
+      JobCategories: {
+        path: 'master-data/job-categories',
+        getHref: () => 'master-data/job-categories',
+      },
+      JobElements: {
+        path: 'master-data/job-elements',
+        getHref: () => 'master-data/job-elements',
+      },
+    },
+    // PROFILE
     profile: {
-      path: 'app/profile',
-      getHref: () => '/app/profile',
+      path: '/profile',
+      getHref: () => '/profile',
     },
   },
 } as const;

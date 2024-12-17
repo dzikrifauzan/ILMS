@@ -59,13 +59,59 @@ export const createAppRouter = () =>
           ErrorBoundary: AppRootErrorBoundary,
         },
         {
-          path: paths.app.standardWork.path,
+          path: paths.app.standardWork.creationForm.path,
+          lazy: async () => {
+            const { CreationForm } = await import('./routes/app/creation-form');
+            return {
+              Component: CreationForm,
+            };
+          },
+          ErrorBoundary: AppRootErrorBoundary,
+        },
+        {
+          path: paths.app.standardWork.ApprovalStatus.path,
+          lazy: async () => {
+            const { ApprovalStatus } = await import(
+              './routes/app/approval-status'
+            );
+            return {
+              Component: ApprovalStatus,
+            };
+          },
+          ErrorBoundary: AppRootErrorBoundary,
+        },
+        {
+          path: paths.app.standardWork.SwInquiry.path,
           lazy: async () => {
             const { DocumentTable } = await import(
               './routes/app/standard-work'
             );
             return {
               Component: DocumentTable,
+            };
+          },
+          ErrorBoundary: AppRootErrorBoundary,
+        },
+        {
+          path: paths.app.masterData.JobCategories.path,
+          lazy: async () => {
+            const { JobCategoriesTable } = await import(
+              './routes/app/job-categories'
+            );
+            return {
+              Component: JobCategoriesTable,
+            };
+          },
+          ErrorBoundary: AppRootErrorBoundary,
+        },
+        {
+          path: paths.app.masterData.JobElements.path,
+          lazy: async () => {
+            const { ApprovalStatus } = await import(
+              './routes/app/approval-status'
+            );
+            return {
+              Component: ApprovalStatus,
             };
           },
           ErrorBoundary: AppRootErrorBoundary,

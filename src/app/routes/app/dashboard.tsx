@@ -38,12 +38,9 @@ export function DashboardRoute() {
   return (
     <ContentLayout title="Dashboard">
       <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
-        {/* Header */}
-
-        {/* Metrics */}
         <div className="flex justify-between items-center">
           <Metric label="Std. Working Time" value={455} />
-          <Metric label="ETE Target" value={437} />
+          <Metric label="Eff. Target" value={437} />
           <Metric label="Ave. Workload" value={455} indicator="green" />
           <Metric label="Max. Workload" value={495} indicator="red" />
           <Metric label="Min. Workload" value={430} indicator="blue" />

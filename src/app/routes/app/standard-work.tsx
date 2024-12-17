@@ -1,8 +1,8 @@
 'use client';
 
-import { Pencil, Search, Trash } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pencil, Search, Trash } from 'lucide-react';
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { ContentLayout } from '@/components/layouts';
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,18 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-const documents = [
+type Document = {
+  id: number;
+  documentNo: string;
+  documentTitle: string;
+  status: string;
+  createdBy: string;
+  createdDate: string;
+  changeBy: string;
+  changeDate: string;
+};
+
+const documents: Document[] = [
   {
     id: 1,
     documentNo: 'PC202412000001',
@@ -34,211 +45,152 @@ const documents = [
     changeBy: 'Admin',
     changeDate: '10 Dec 2024',
   },
-  // ... more documents
+  {
+    id: 2,
+    documentNo: 'PC202412000002',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
+  {
+    id: 3,
+    documentNo: 'PC202412000003',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
+  {
+    id: 4,
+    documentNo: 'PC202412000004',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
+  {
+    id: 5,
+    documentNo: 'PC202412000005',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
+  {
+    id: 6,
+    documentNo: 'PC202412000006',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
+  {
+    id: 7,
+    documentNo: 'PC202412000007',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
+  {
+    id: 8,
+    documentNo: 'PC202412000008',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
+  {
+    id: 9,
+    documentNo: 'PC202412000009',
+    documentTitle: 'Supply Route A',
+    status: 'Draft',
+    createdBy: 'Admin',
+    createdDate: '10 Dec 2024',
+    changeBy: 'Admin',
+    changeDate: '10 Dec 2024',
+  },
 ];
 
-// This would typically come from an API or database
-const hierarchicalData = {
-  'Plant 1': {
-    ISTD: {
-      SDI: {
-        'Section 1': ['Line A', 'Line B'],
-        'Section 2': ['Line C', 'Line D'],
-      },
-      SCM: {
-        'Section 3': ['Line E', 'Line F'],
-        'Section 4': ['Line G', 'Line H'],
-      },
-    },
-    PAD: {
-      ' Operation': {
-        'Section 5': ['Line I', 'Line J'],
-        'Section 6': ['Line K', 'Line L'],
-      },
-    },
-  },
-  'Plant 2': {
-    ISTD: {
-      SDI: {
-        'Section 7': ['Line M', 'Line N'],
-        'Section 8': ['Line O', 'Line P'],
-      },
-    },
-    PAD: {
-      'Operation 1': {
-        'Section 7': ['Line M', 'Line N'],
-        'Section 8': ['Line O', 'Line P'],
-      },
-    },
-  },
-};
-
 export function DocumentTable() {
-  const [selectedPlant, setSelectedPlant] = useState<string>('');
-  const [selectedDivision, setSelectedDivision] = useState<string>('');
-  const [selectedDepartment, setSelectedDepartment] = useState<string>('');
-  const [selectedSection, setSelectedSection] = useState<string>('');
-  const [selectedLine, setSelectedLine] = useState<string>('');
-
-  const [divisionOptions, setDivisionOptions] = useState<string[]>([]);
-  const [departmentOptions, setDepartmentOptions] = useState<string[]>([]);
-  const [sectionOptions, setSectionOptions] = useState<string[]>([]);
-  const [lineOptions, setLineOptions] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (selectedPlant) {
-      setDivisionOptions(Object.keys(hierarchicalData[selectedPlant] || {}));
-      setSelectedDivision('');
-      setSelectedDepartment('');
-      setSelectedSection('');
-      setSelectedLine('');
-    }
-  }, [selectedPlant]);
-
-  useEffect(() => {
-    if (selectedPlant && selectedDivision) {
-      setDepartmentOptions(
-        Object.keys(hierarchicalData[selectedPlant][selectedDivision] || {}),
-      );
-      setSelectedDepartment('');
-      setSelectedSection('');
-      setSelectedLine('');
-    }
-  }, [selectedPlant, selectedDivision]);
-
-  useEffect(() => {
-    if (selectedPlant && selectedDivision && selectedDepartment) {
-      setSectionOptions(
-        Object.keys(
-          hierarchicalData[selectedPlant][selectedDivision][
-            selectedDepartment
-          ] || {},
-        ),
-      );
-      setSelectedSection('');
-      setSelectedLine('');
-    }
-  }, [selectedPlant, selectedDivision, selectedDepartment]);
-
-  useEffect(() => {
-    if (
-      selectedPlant &&
-      selectedDivision &&
-      selectedDepartment &&
-      selectedSection
-    ) {
-      setLineOptions(
-        hierarchicalData[selectedPlant][selectedDivision][selectedDepartment][
-          selectedSection
-        ] || [],
-      );
-      setSelectedLine('');
-    }
-  }, [selectedPlant, selectedDivision, selectedDepartment, selectedSection]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   return (
-    <ContentLayout title='Document List'>
+    <ContentLayout title="SW Document">
       <div className="space-y-4">
         <div className="grid grid-cols-6 gap-4">
           <div className="space-y-1.5">
             <Label className="text-sm font-medium">Plant</Label>
-            <Select onValueChange={setSelectedPlant}>
+            <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select Plant" />
               </SelectTrigger>
-              <SelectContent>
-                {Object.keys(hierarchicalData).map((plant) => (
-                  <SelectItem key={plant} value={plant}>
-                    {plant}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+              <SelectContent></SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm font-medium">Division</Label>
-            <Select
-              onValueChange={setSelectedDivision}
-              disabled={!selectedPlant}
-            >
+            <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select Division" />
               </SelectTrigger>
-              <SelectContent>
-                {divisionOptions.map((division) => (
-                  <SelectItem key={division} value={division}>
-                    {division}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+              <SelectContent></SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm font-medium">Department</Label>
-            <Select
-              onValueChange={setSelectedDepartment}
-              disabled={!selectedDivision}
-            >
+            <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select Department" />
               </SelectTrigger>
-              <SelectContent>
-                {departmentOptions.map((department) => (
-                  <SelectItem key={department} value={department}>
-                    {department}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+              <SelectContent></SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm font-medium">Section</Label>
-            <Select
-              onValueChange={setSelectedSection}
-              disabled={!selectedDepartment}
-            >
+            <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select Section" />
               </SelectTrigger>
-              <SelectContent>
-                {sectionOptions.map((section) => (
-                  <SelectItem key={section} value={section}>
-                    {section}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+              <SelectContent></SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm font-medium">Line</Label>
-            <Select onValueChange={setSelectedLine} disabled={!selectedSection}>
+            <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select Line" />
               </SelectTrigger>
-              <SelectContent>
-                {lineOptions.map((line) => (
-                  <SelectItem key={line} value={line}>
-                    {line}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+              <SelectContent></SelectContent>
             </Select>
           </div>
           <div className="flex items-end gap-2">
-            <Button className=" flex bg-white-600 hover:bg-white-700 text-black gap-2">
-              <Search className="size-4 mr-2" />
-              Search
+            <Button variant="outline" className="flex gap-2">
+              <Search className="size-4" />
             </Button>
-            <div className="flex items-end">
-              <Button className="bg-red-700 hover:bg-red-800">Download</Button>
-            </div>
+            <Button className="bg-red-600 hover:bg-red-700">Download</Button>
           </div>
         </div>
 
         <TableElement>
           <TableHeader>
             <TableRow>
-              <TableHead>No.</TableHead>
+              <TableHead className="w-[50px]">No.</TableHead>
               <TableHead>Document No.</TableHead>
               <TableHead>Document Title</TableHead>
               <TableHead>Status</TableHead>
@@ -246,17 +198,17 @@ export function DocumentTable() {
               <TableHead>Created Date</TableHead>
               <TableHead>Change By</TableHead>
               <TableHead>Change Date</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead className="w-[100px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {documents.map((doc, index) => (
+            {documents.map((doc: Document, index: number) => (
               <TableRow key={doc.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{doc.documentNo}</TableCell>
                 <TableCell>{doc.documentTitle}</TableCell>
                 <TableCell>
-                  <span className="rounded bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
+                  <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
                     {doc.status}
                   </span>
                 </TableCell>
@@ -266,10 +218,11 @@ export function DocumentTable() {
                 <TableCell>{doc.changeDate}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="size-8">
                       <Pencil className="size-4" />
                     </Button>
-                    <Button variant="ghost" size="icon">
+
+                    <Button variant="ghost" size="icon" className="size-8">
                       <Trash className="size-4" />
                     </Button>
                   </div>
@@ -278,6 +231,35 @@ export function DocumentTable() {
             ))}
           </TableBody>
         </TableElement>
+
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <span className="text-sm">{currentPage} of 10</span>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setCurrentPage((prev) => Math.min(10, prev + 1))}
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+          <Select defaultValue="0">
+            <SelectTrigger className="w-[70px]">
+              <SelectValue placeholder="0" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="0">0</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </ContentLayout>
   );

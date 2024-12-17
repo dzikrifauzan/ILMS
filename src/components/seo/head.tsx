@@ -7,11 +7,11 @@ type HeadProps = {
 
 const helmetData = new HelmetData({});
 
-export const Head = ({ title = '', description = '' }: HeadProps = {}) => {
+export const Head = ({ description = '' }: HeadProps = {}) => {
   return (
     <Helmet
       helmetData={helmetData}
-      title={title ? `${title} | Bulletproof React` : undefined}
+      title={'ILMS'}
       defaultTitle="Bulletproof React"
     >
       <meta name="description" content={description} />
