@@ -23,7 +23,7 @@ const LogoComponent = () => {
       className="flex items-center text-white"
       to={paths.app.dashboard.getHref()}
     >
-      <span className="text-6xl font-semibold text-white">ILMS</span>
+      <span className="text-7xl font-semibold text-white">ILMS</span>
     </Link>
   );
 };

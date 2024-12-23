@@ -36,7 +36,8 @@ function Metric({ label, value, indicator }: MetricProps) {
 
 export function DashboardRoute() {
   return (
-    <ContentLayout title="Dashboard">
+    <div>
+      <div className="mb-6 text-xl font-semibold">Dashboard</div>
       <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
         <div className="flex justify-between items-center">
           <Metric label="Std. Working Time" value={455} />
@@ -46,6 +47,6 @@ export function DashboardRoute() {
           <Metric label="Min. Workload" value={430} indicator="blue" />
         </div>
       </div>
-    </ContentLayout>
+    </div>
   );
 }

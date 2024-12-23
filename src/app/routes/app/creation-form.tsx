@@ -1,17 +1,25 @@
 'use client';
-
 import {
   Camera,
   Upload,
   FilePlus,
-  Plus,
-  Pencil,
   Trash2,
   Save,
+  Pencil,
+  Trash,
 } from 'lucide-react';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
+import {
+  ConfirmationDialog,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import JobFormModal from '@/components/ui/form-modal/form-modal';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -21,16 +29,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Table,
   TableBody,
   TableCell,
+  TableElement,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ColumnDef } from '@tanstack/react-table';
+import { useUser } from '@/stores/auth';
 
-interface ProcessElement {
+type ProcessElement = {
   id: number;
   elementJob: string;
   category: string;
@@ -40,120 +48,167 @@ interface ProcessElement {
   distance: string;
   frequency: string;
   total: string;
-}
+};
+
+const documents: ProcessElement[] = [
+  {
+    id: 1,
+    elementJob: 'JC10412/20/000009',
+    category: 'Supply Point A',
+    manual: '10s',
+    walking: '10s',
+    driving: '20s',
+    distance: '???',
+    frequency: '???',
+    total: '???',
+  },
+  {
+    id: 2,
+    elementJob: 'JC10412/20/000009',
+    category: 'Supply Point A',
+    manual: '10s',
+    walking: '10s',
+    driving: '20s',
+    distance: '???',
+    frequency: '???',
+    total: '???',
+  },
+  {
+    id: 3,
+    elementJob: 'JC10412/20/000009',
+    category: 'Supply Point A',
+    manual: '10s',
+    walking: '10s',
+    driving: '20s',
+    distance: '???',
+    frequency: '???',
+    total: '???',
+  },
+];
+
+// const columns: ColumnDef<ProcessElement>[] = [
+//   { id: 'id', accessorKey: 'id', header: 'No.' },
+//   { id: 'elementJob', accessorKey: 'elementJob', header: 'Element Job' },
+//   { id: 'category', accessorKey: 'category', header: 'Category' },
+//   { id: 'manual', accessorKey: 'manual', header: 'Manual' },
+//   { id: 'walking', accessorKey: 'walking', header: 'Walking' },
+//   { id: 'driving', accessorKey: 'driving', header: 'Driving' },
+//   { id: 'distance', accessorKey: 'distance', header: 'Distance' },
+//   { id: 'frequency', accessorKey: 'frequency', header: 'Frequency' },
+//   { id: 'total', accessorKey: 'total', header: 'Total' },
+//   {
+//     id: 'actions',
+//     cell: () => (
+//       <div className="flex justify-center gap-1">
+//         <Dialog>
+//           <DialogTrigger asChild></DialogTrigger>
+//           <ConfirmationDialog
+//             title="Delete Element"
+//             triggerButton={
+//               <Button variant="ghost">
+//                 <Trash2 className="size-4" />
+//               </Button>
+//             }
+//             confirmButton={<Button variant="destructive">Delete</Button>}
+//           />
+//         </Dialog>
+//       </div>
+//     ),
+//   },
+// ];
 
 export const CreationForm = () => {
-  const [processElements, setProcessElements] = React.useState<
-    ProcessElement[]
-  >([
-    {
-      id: 1,
-      elementJob: 'JC10412/20/000009',
-      category: 'Supply Point A',
-      manual: '10 pt',
-      walking: '10 pt',
-      driving: '20 pt',
-      distance: '???',
-      frequency: '???',
-      total: '???',
-    },
-  ]);
-
-  const columns: ColumnDef<ProcessElement>[] = [
-    { accessorKey: 'id', header: 'No.' },
-    { accessorKey: 'elementJob', header: 'Element Job' },
-    { accessorKey: 'category', header: 'Category' },
-    { accessorKey: 'manual', header: 'Manual' },
-    { accessorKey: 'walking', header: 'Walking' },
-    { accessorKey: 'driving', header: 'Driving' },
-    { accessorKey: 'distance', header: 'Distance' },
-    { accessorKey: 'frequency', header: 'Frequency' },
-    { accessorKey: 'total', header: 'Total' },
-    {
-      id: 'actions',
-      cell: ({ row }) => (
-        <div className="flex justify-center gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <Pencil className="size-4" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <Trash2 className="size-4" />
-          </Button>
-        </div>
-      ),
-    },
-  ];
-
+  const [User] = useUser();
   return (
-    <div className="p-6 bg-white">
+    <div className="bg-white space-y-4">
+      <div className="mb-6 text-xl font-semibold">Creation Form</div>
       <div className="mb-6">
-        <div className="text-xl font-semibold mb-4">Creation Form</div>
-
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <Select>
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Tack Time" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="time1">Time 1</SelectItem>
-              <SelectItem value="time2">Time 2</SelectItem>
+              <SelectItem value="time1">Tack Time 1.6</SelectItem>
+              <SelectItem value="time2">Tack Time 2.1</SelectItem>
             </SelectContent>
           </Select>
 
-          <div className="flex gap-2">
-            <Button className="bg-red-700 hover:bg-red-800">
-              <Upload className="mr-2 size-4" />
-              Upload
+          <div className="flex gap-2 ">
+            <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800 ">
+              <label className="flex cursor-pointer items-center gap-2">
+                <input type="file" className="hidden" />
+                <Upload className="size-4" />
+                <span>Upload</span>
+              </label>
             </Button>
-            <Button variant="outline">
-              <Save className="mr-2 size-4" />
-              Save Draft
+            <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800 ">
+              <div className="flex cursor-pointer items-center gap-2">
+                <Save className="size-4" />
+                <span>Save Draft</span>
+              </div>
             </Button>
-            <Button variant="outline">
-              <FilePlus className="mr-2 size-4" />
-              Preview
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800 ">
+                  <div className="flex cursor-pointer items-center gap-2">
+                    <FilePlus className="size-4" />
+                    <span>Preview</span>
+                  </div>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Preview</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-6 py-4">
+                  {/* Preview content goes here */}
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
-
         <div className="grid grid-cols-6 gap-4">
           {/* Left Column */}
           <div className="col-span-1 space-y-6">
             <div className="space-y-4">
               <h3 className="font-medium">Information</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm text-gray-600 block mb-1">
-                    Author
-                  </label>
-                  <Input value="Steven" disabled className="bg-gray-50" />
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <span className="w-32 text-sm text-gray-600">Author</span>
+                  <span className="text-sm">: {User.data?.firstName}</span>
                 </div>
-                <div>
-                  <label className="text-sm text-gray-600 block mb-1">
-                    Status
-                  </label>
-                  <Input value="Draft" disabled className="bg-gray-50" />
+                <div className="flex items-center">
+                  <span className="w-32 text-sm text-gray-600">Status</span>
+                  <span className="text-sm">: Draft</span>
                 </div>
-                <div>
-                  <label className="text-sm text-gray-600 block mb-1">
-                    Revision
-                  </label>
-                  <Input value="1.-" disabled className="bg-gray-50" />
+                <div className="flex items-center">
+                  <span className="w-32 text-sm text-gray-600">Revision</span>
+                  <span className="text-sm">: -</span>
                 </div>
-                <div>
-                  <label className="text-sm text-gray-600 block mb-1">
+                <div className="flex items-center">
+                  <label
+                    htmlFor="manpower"
+                    className="w-32 text-sm text-gray-600"
+                  >
                     Man Power No.
                   </label>
-                  <Input placeholder="Enter man power no." />
+                  <span className="text-sm">:</span>
+                  <Input
+                    id="manpower"
+                    type="number"
+                    placeholder="No."
+                    className="ml-2 h-7 w-16 rounded-lg border-2 border-gray-300 px-2 py-1 text-sm"
+                  />
                 </div>
               </div>
             </div>
 
             <div className="space-y-4">
               <h3 className="font-medium">Upload Image</h3>
-              <div className="border-2 border-dashed rounded-lg p-8">
+              <div className="rounded-lg border-2 border-dashed p-8">
                 <div className="flex flex-col items-center justify-center text-gray-500">
-                  <Camera className="size-12 mb-2" />
+                  <Camera className="mb-2 size-12" />
                   <span>Camera</span>
                 </div>
               </div>
@@ -172,7 +227,10 @@ export const CreationForm = () => {
                 'Line',
               ].map((label) => (
                 <div key={label}>
-                  <label className="text-sm text-gray-600 block mb-1">
+                  <label
+                    htmlFor={label}
+                    className="mb-1 block text-sm text-gray-600"
+                  >
                     {label}
                   </label>
                   <Select>
@@ -191,7 +249,7 @@ export const CreationForm = () => {
 
           {/* Right Column */}
           <div className="col-span-5">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="mb-4 flex items-center gap-2">
               <Input placeholder="Add Process Name" className="flex-1" />
               <Select defaultValue="gentan-1">
                 <SelectTrigger className="w-[150px]">
@@ -202,42 +260,65 @@ export const CreationForm = () => {
                   <SelectItem value="gentan-2">TSKK</SelectItem>
                 </SelectContent>
               </Select>
-              <Button className="bg-red-700 hover:bg-red-800">
-                <Plus className="mr-2 size-4" />
-                Add
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild></DialogTrigger>
+                <JobFormModal />
+              </Dialog>
             </div>
+            {/* Table */}
+            <TableElement>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">No.</TableHead>
+                  <TableHead className="w-[200px]">Element Job</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead className="w-[10px]">Manual</TableHead>
+                  <TableHead className="w-[10px]">Walking</TableHead>
+                  <TableHead className="w-[150px]">Driving</TableHead>
+                  <TableHead>Distance</TableHead>
+                  <TableHead>Frequency</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead className="w-[100px]">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {documents.map((doc: ProcessElement, index: number) => (
+                  <TableRow key={doc.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{doc.elementJob}</TableCell>
+                    <TableCell>{doc.category}</TableCell>
+                    <TableCell>{doc.manual}</TableCell>
+                    <TableCell>{doc.walking}</TableCell>
+                    <TableCell>{doc.driving}</TableCell>
+                    <TableCell>{doc.distance}</TableCell>
+                    <TableCell>{doc.frequency}</TableCell>
+                    <TableCell>{doc.total}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="icon" className="size-8">
+                          <Pencil className="size-4" />
+                        </Button>
 
-            <div className="rounded-md border">
-              <Table data={processElements} columns={columns}>
-                <TableHeader>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableHead key={column.id}>
-                        {column.header as React.ReactNode}
-                      </TableHead>
-                    ))}
+                        <Dialog>
+                          <DialogTrigger asChild></DialogTrigger>
+                          <ConfirmationDialog
+                            title="Delete Element"
+                            triggerButton={
+                              <Button variant="ghost">
+                                <Trash2 className="size-4" />
+                              </Button>
+                            }
+                            confirmButton={
+                              <Button variant="destructive">Delete</Button>
+                            }
+                          />
+                        </Dialog>
+                      </div>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {processElements.map((element) => (
-                    <TableRow key={element.id}>
-                      {columns.map((column) => (
-                        <TableCell key={column.id}>
-                          {column.accessorKey
-                            ? element[
-                                column.accessorKey as keyof ProcessElement
-                              ]
-                            : column.cell
-                              ? column.cell({ row: { original: element } })
-                              : null}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </TableElement>
           </div>
         </div>
       </div>

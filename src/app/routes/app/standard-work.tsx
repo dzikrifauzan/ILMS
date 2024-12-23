@@ -1,6 +1,14 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Pencil, Search, Trash } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Pencil,
+  Search,
+  Trash,
+  Trash2,
+} from 'lucide-react';
 import * as React from 'react';
 import { useState } from 'react';
 
@@ -22,6 +30,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Input } from 'postcss';
+import {
+  ConfirmationDialog,
+  Dialog,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 type Document = {
   id: number;
@@ -128,65 +142,106 @@ const documents: Document[] = [
 ];
 
 export function DocumentTable() {
+  const totalPages = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
   return (
-    <ContentLayout title="SW Document">
-      <div className="space-y-4">
-        <div className="grid grid-cols-6 gap-4">
+    <div className="space-y-4">
+      <div className="mb-6 text-xl font-semibold">Sw Inquiry</div>
+      <div className="space-y-6">
+        <div className="flex items-end gap-4">
           <div className="space-y-1.5">
-            <Label className="text-sm font-medium">Plant</Label>
+            <Label className="text-sm text-gray-600">Status</Label>
             <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Plant" />
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="All" />
               </SelectTrigger>
-              <SelectContent></SelectContent>
+              <SelectContent>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label className="text-sm text-gray-600">Division</Label>
+            <Select>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="div1">Division 1</SelectItem>
+                <SelectItem value="div2">Division 2</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label className="text-sm text-gray-600">Departement</Label>
+            <Select>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dept1">Departement 1</SelectItem>
+                <SelectItem value="dept2">Departement 2</SelectItem>
+              </SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
-            <Label className="text-sm font-medium">Division</Label>
+            <Label className="text-sm text-gray-600">Section</Label>
             <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Division" />
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="All" />
               </SelectTrigger>
-              <SelectContent></SelectContent>
+              <SelectContent>
+                <SelectItem value="sect1">Section 1</SelectItem>
+                <SelectItem value="sect2">Section 2</SelectItem>
+              </SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
-            <Label className="text-sm font-medium">Department</Label>
+            <Label className="text-sm text-gray-600">Line</Label>
             <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Department" />
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="All" />
               </SelectTrigger>
-              <SelectContent></SelectContent>
+              <SelectContent>
+                <SelectItem value="line1">Line 1</SelectItem>
+                <SelectItem value="line2">Line 2</SelectItem>
+              </SelectContent>
             </Select>
           </div>
+
           <div className="space-y-1.5">
-            <Label className="text-sm font-medium">Section</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Section" />
-              </SelectTrigger>
-              <SelectContent></SelectContent>
-            </Select>
+            <div className="flex gap-2">
+              <Button className="flex items-center px-1 rounded bg-white/40 hover:bg-black/10 text-black/70">
+                <div className="flex cursor-pointer items-center gap-2">
+                  <Search className="size-4" />
+                  <span>Search</span>
+                </div>
+              </Button>
+            </div>
           </div>
-          <div className="space-y-1.5">
-            <Label className="text-sm font-medium">Line</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Line" />
-              </SelectTrigger>
-              <SelectContent></SelectContent>
-            </Select>
-          </div>
-          <div className="flex items-end gap-2">
-            <Button variant="outline" className="flex gap-2">
-              <Search className="size-4" />
+
+          <div className="ml-auto">
+            <Button className="flex items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <div className="flex cursor-pointer items-center gap-2">
+                <Download className="size-4" />
+                <span>Download</span>
+              </div>
             </Button>
-            <Button className="bg-red-600 hover:bg-red-700">Download</Button>
           </div>
         </div>
-
+        {/* Table */}
         <TableElement>
           <TableHeader>
             <TableRow>
@@ -222,9 +277,20 @@ export function DocumentTable() {
                       <Pencil className="size-4" />
                     </Button>
 
-                    <Button variant="ghost" size="icon" className="size-8">
-                      <Trash className="size-4" />
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild></DialogTrigger>
+                      <ConfirmationDialog
+                        title="Delete Element"
+                        triggerButton={
+                          <Button variant="ghost">
+                            <Trash2 className="size-4" />
+                          </Button>
+                        }
+                        confirmButton={
+                          <Button variant="destructive">Delete</Button>
+                        }
+                      />
+                    </Dialog>
                   </div>
                 </TableCell>
               </TableRow>
@@ -232,35 +298,38 @@ export function DocumentTable() {
           </TableBody>
         </TableElement>
 
-        <div className="flex items-center justify-center gap-2">
+        {/* Pagination */}
+        <div className="flex items-center justify-between px-2 py-4">
           <Button
             variant="outline"
-            size="icon"
-            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            size="sm"
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
           >
-            <ChevronLeft className="size-4" />
+            <div className="flex cursor-pointer items-centers">
+              <ChevronLeft className="size-4" />
+              <span></span>
+            </div>
           </Button>
-          <span className="text-sm">{currentPage} of 10</span>
+
+          <div className="flex items-center gap-1">
+            <span className="text-sm text-gray-700">
+              {currentPage} of {totalPages}
+            </span>
+          </div>
           <Button
             variant="outline"
-            size="icon"
-            onClick={() => setCurrentPage((prev) => Math.min(10, prev + 1))}
+            size="sm"
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
           >
-            <ChevronRight className="size-4" />
+            <div className="flex cursor-pointer items-center">
+              <ChevronRight className="size-4" />
+              <span></span>
+            </div>
           </Button>
-          <Select defaultValue="0">
-            <SelectTrigger className="w-[70px]">
-              <SelectValue placeholder="0" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="0">0</SelectItem>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
       </div>
-    </ContentLayout>
+    </div>
   );
 }

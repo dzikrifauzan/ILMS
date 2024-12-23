@@ -7,11 +7,26 @@ import {
   Trash2,
   Plus,
   Search,
+  Pencil,
 } from 'lucide-react';
 import * as React from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  TableBody,
+  TableCell,
+  TableElement,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  ConfirmationDialog,
+  Dialog,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 interface JobCategory {
   id: number;
@@ -107,114 +122,157 @@ export const JobCategoriesTable = () => {
       changeDate: '10 Dec 2024',
     },
   ];
+  const totalPages = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
-    <div className="p-6 bg-white">
+    <div className="space-y-4">
       <div className="flex justify-between items-center mb-6">
         <div className="text-xl font-semibold">Job Categories</div>
-        <Button className="bg-red-700 hover:bg-red-800">
-          <Plus className="mr-2 size-4" />
-          Add
+        <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800 ">
+          <div className="flex cursor-pointer items-center gap-2">
+            <Plus className="size-4" />
+            <span>Add</span>
+          </div>
         </Button>
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
-          <div className="rounded-md border">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50">
-                  <th className="px-4 py-2 text-left">No</th>
-                  <th className="px-4 py-2 text-left">ID</th>
-                  <th className="px-4 py-2 text-left">Category</th>
-                  <th className="px-4 py-2 text-left">Created By</th>
-                  <th className="px-4 py-2 text-left">Created Date</th>
-                  <th className="px-4 py-2 text-left">Changed By</th>
-                  <th className="px-4 py-2 text-left">Change Date</th>
-                  <th className="px-4 py-2 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories.map((category) => (
-                  <tr key={category.id} className="border-t">
-                    <td className="px-4 py-2">{category.id}</td>
-                    <td className="px-4 py-2">{category.categoryId}</td>
-                    <td className="px-4 py-2">{category.category}</td>
-                    <td className="px-4 py-2">{category.createdBy}</td>
-                    <td className="px-4 py-2">{category.createdDate}</td>
-                    <td className="px-4 py-2">{category.changedBy}</td>
-                    <td className="px-4 py-2">{category.changeDate}</td>
-                    <td className="px-4 py-2">
-                      <div className="flex justify-center gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <SquarePen className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+      <TableElement>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[50px]">No.</TableHead>
+            <TableHead>Document No.</TableHead>
+            <TableHead>Document Title</TableHead>
+            <TableHead>Created By</TableHead>
+            <TableHead>Created Date</TableHead>
+            <TableHead>Change By</TableHead>
+            <TableHead>Change Date</TableHead>
+            <TableHead className="w-[100px]">Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {categories.map((doc: JobCategory, index: number) => (
+            <TableRow key={doc.id}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{doc.categoryId}</TableCell>
+              <TableCell>{doc.category}</TableCell>
+
+              <TableCell>{doc.createdBy}</TableCell>
+              <TableCell>{doc.createdDate}</TableCell>
+              <TableCell>{doc.changedBy}</TableCell>
+              <TableCell>{doc.changeDate}</TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <Button variant="ghost" size="icon" className="size-8">
+                    <Pencil className="size-4" />
+                  </Button>
+
+                  <Dialog>
+                    <DialogTrigger asChild></DialogTrigger>
+                    <ConfirmationDialog
+                      title="Delete Element"
+                      triggerButton={
+                        <Button variant="ghost">
                           <Trash2 className="size-4" />
                         </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      }
+                      confirmButton={
+                        <Button variant="destructive">Delete</Button>
+                      }
+                    />
+                  </Dialog>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableElement>
 
-          <div className="flex items-center justify-between px-2 py-4">
-            <Button variant="outline" size="icon">
-              <ChevronLeft className="size-4" />
-            </Button>
-            <div className="flex items-center gap-1">
-              <span className="text-sm text-gray-700">2 of 10</span>
-            </div>
-            <Button variant="outline" size="icon">
-              <ChevronRight className="size-4" />
-            </Button>
+      {/* Pagination */}
+      <div className="flex items-center justify-between px-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+        >
+          <div className="flex cursor-pointer items-centers">
+            <ChevronLeft className="size-4" />
+            <span></span>
           </div>
-        </div>
+        </Button>
 
-        <div className="w-[250px] h-[275px] p-4 bg-gray-50 rounded-lg space-y-4">
-          <div className="text-sm font-medium">Filter</div>
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="categoryName"
-                className="text-sm text-gray-600 block mb-1"
-              >
-                Category Name
-              </label>
-              <Input
-                id="categoryName"
-                placeholder="Enter category name"
-                className="bg-white"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="categoryId"
-                className="text-sm text-gray-600 block mb-1"
-              >
-                Category ID
-              </label>
-              <Input
-                id="categoryId"
-                placeholder="Enter category ID"
-                className="bg-white"
-              />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex-1">
-                <Trash2 className="mr-2 size-4" />
-                Clear
-              </Button>
-              <Button className="flex-1 bg-red-700 hover:bg-red-800">
-                <Search className="mr-2 size-4" />
-                Search
-              </Button>
-            </div>
-          </div>
+        <div className="flex items-center gap-1">
+          <span className="text-sm text-gray-700">
+            {currentPage} of {totalPages}
+          </span>
         </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+        >
+          <div className="flex cursor-pointer items-center">
+            <ChevronRight className="size-4" />
+            <span></span>
+          </div>
+        </Button>
       </div>
+      {/* Filter
+      <div className="w-[250px] h-[275px] p-4 bg-gray-50 rounded-lg space-y-4">
+        <div className="text-sm font-medium">Filter</div>
+        <div className="space-y-4">
+          <div>
+            <label
+              htmlFor="categoryName"
+              className="text-sm text-gray-600 block mb-1"
+            >
+              Category Name
+            </label>
+            <Input
+              id="categoryName"
+              placeholder="Enter category name"
+              className="bg-white"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="categoryId"
+              className="text-sm text-gray-600 block mb-1"
+            >
+              Category ID
+            </label>
+            <Input
+              id="categoryId"
+              placeholder="Enter category ID"
+              className="bg-white"
+            />
+          </div>
+          <div className="flex justify-center gap-2">
+            <Button className=" flex px-1 items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <div className="flex cursor-pointer items-center gap-2">
+                <Trash2 className="size-4" />
+                <span>Delete</span>
+              </div>
+            </Button>
+            <Button className="flex  px-1 items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <div className="flex cursor-pointer items-center gap-2">
+                <Search className="size-4" />
+                <span>Search</span>
+              </div>
+            </Button>
+          </div>
+        </div>
+      </div> */}
     </div>
   );
 };

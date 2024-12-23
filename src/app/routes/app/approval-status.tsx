@@ -1,7 +1,16 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Download, Search } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Pencil,
+  Search,
+  Trash,
+  Trash2,
+} from 'lucide-react';
 import * as React from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +22,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  TableBody,
+  TableCell,
+  TableElement,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { ConfirmationDialog, Dialog, DialogTrigger } from '@/components/ui/dialog';
 
 interface ApprovalItem {
   id: number;
@@ -26,7 +44,6 @@ interface ApprovalItem {
 }
 
 export const ApprovalStatus = () => {
-  const [currentPage, setCurrentPage] = React.useState(1);
   const approvals: ApprovalItem[] = [
     {
       id: 1,
@@ -120,10 +137,20 @@ export const ApprovalStatus = () => {
     },
   ];
 
-  return (
-    <div className="p-6 bg-white">
-      <div className="mb-6 text-xl font-semibold">Approval Status</div>
+  const totalPages = 10;
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="mb-6 text-xl font-semibold">Approval Status</div>
       <div className="space-y-6">
         {/* Filters */}
         <div className="flex items-end gap-4">
@@ -173,94 +200,116 @@ export const ApprovalStatus = () => {
                 placeholder="Enter document number"
                 className="w-[200px]"
               />
-              <Button variant="outline" size="icon">
-                <Search className="size-4" />
+              <Button className="flex items-center rounded bg-white/40 hover:bg-black/10 text-black/70">
+                <div className="flex cursor-pointer items-center gap-2">
+                  <Search className="size-4" />
+                  <span>Search</span>
+                </div>
               </Button>
             </div>
           </div>
 
           <div className="ml-auto">
-            <Button className="bg-red-700 hover:bg-red-800">
-              <Download className="mr-2 size-4" />
-              Download
+            <Button className="flex items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <div className="flex cursor-pointer items-center gap-2">
+                <Download className="size-4" />
+                <span>Download</span>
+              </div>
             </Button>
           </div>
         </div>
 
         {/* Table */}
-        <div className="rounded-md border">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="px-4 py-2 text-left">No.</th>
-                <th className="px-4 py-2 text-left">W/F Status</th>
-                <th className="px-4 py-2 text-left">Next Approval</th>
-                <th className="px-4 py-2 text-left">Document No.</th>
-                <th className="px-4 py-2 text-left">Main Description</th>
-                <th className="px-4 py-2 text-left">Dept</th>
-                <th className="px-4 py-2 text-left">Line</th>
-                <th className="px-4 py-2 text-left">Creation Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {approvals.map((item) => (
-                <tr key={item.id} className="border-t">
-                  <td className="px-6 py-2">{item.id}</td>
-                  <td className="px-4 py-2">
-                    {item.status === 'Pending' ? (
-                      <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-                        {item.status}
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/10">
-                        {item.status}
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-2">{item.nextApproval}</td>
-                  <td className="px-6 py-2">{item.documentNo}</td>
-                  <td className="px-6 py-2">{item.mainDescription}</td>
-                  <td className="px-5 py-2">{item.dept}</td>
-                  <td className="px-4 py-2">{item.line}</td>
-                  <td className="px-4 py-2">{item.creationDate}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <TableElement>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[70px]">No.</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Next Approval</TableHead>
+              <TableHead>Document No</TableHead>
+              <TableHead>main Description</TableHead>
+              <TableHead>Divisi</TableHead>
+              <TableHead>Line</TableHead>
+              <TableHead className="w-[100px]">Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {approvals.map((doc: ApprovalItem, index: number) => (
+              <TableRow key={doc.id}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>
+                  <span
+                    className={`rounded px-2 py-0.5 text-xs font-medium ${
+                      doc.status === 'Completed'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    {doc.status}
+                  </span>
+                </TableCell>
+                <TableCell>{doc.nextApproval}</TableCell>
+                <TableCell>{doc.documentNo}</TableCell>
+                <TableCell>{doc.mainDescription}</TableCell>
+                <TableCell>{doc.dept}</TableCell>
+                <TableCell>{doc.line}</TableCell>
+                <TableCell>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="icon" className="size-8">
+                      <Pencil className="size-4" />
+                    </Button>
+
+                    <Dialog>
+                      <DialogTrigger asChild></DialogTrigger>
+                      <ConfirmationDialog
+                        title="Delete Element"
+                        triggerButton={
+                          <Button variant="ghost">
+                            <Trash2 className="size-4" />
+                          </Button>
+                        }
+                        confirmButton={
+                          <Button variant="destructive">Delete</Button>
+                        }
+                      />
+                    </Dialog>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </TableElement>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-            >
+        <div className="flex items-center justify-between px-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+          >
+            <div className="flex cursor-pointer items-centers">
               <ChevronLeft className="size-4" />
-            </Button>
-            <span className="text-sm">{currentPage} of 10</span>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentPage((prev) => Math.min(10, prev + 1))}
-            >
+              <span></span>
+            </div>
+          </Button>
+
+          <div className="flex items-center gap-1">
+            <span className="text-sm text-gray-700">
+              {currentPage} of {totalPages}
+            </span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+          >
+            <div className="flex cursor-pointer items-center">
               <ChevronRight className="size-4" />
-            </Button>
-          </div>
-          <div>
-            <Select defaultValue="0">
-              <SelectTrigger className="w-[70px]">
-                <SelectValue placeholder="0" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0">0</SelectItem>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="20">20</SelectItem>
-                <SelectItem value="50">50</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+              <span></span>
+            </div>
+          </Button>
         </div>
       </div>
     </div>
