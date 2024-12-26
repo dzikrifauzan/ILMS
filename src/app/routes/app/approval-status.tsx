@@ -6,13 +6,17 @@ import {
   Download,
   Pencil,
   Search,
-  Trash,
   Trash2,
 } from 'lucide-react';
 import * as React from 'react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import {
+  ConfirmationDialog,
+  Dialog,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -30,7 +34,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ConfirmationDialog, Dialog, DialogTrigger } from '@/components/ui/dialog';
 
 interface ApprovalItem {
   id: number;
@@ -149,7 +152,7 @@ export const ApprovalStatus = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5">
       <div className="mb-6 text-xl font-semibold">Approval Status</div>
       <div className="space-y-6">
         {/* Filters */}
@@ -281,14 +284,14 @@ export const ApprovalStatus = () => {
         </TableElement>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between px-2 py-4">
+        <div className="flex items-center justify-between px-4 py-5">
           <Button
             variant="outline"
             size="sm"
             onClick={handlePrevious}
             disabled={currentPage === 1}
           >
-            <div className="flex cursor-pointer items-centers">
+            <div className="flex items-centers cursor-pointer">
               <ChevronLeft className="size-4" />
               <span></span>
             </div>

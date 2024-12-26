@@ -116,7 +116,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [activeNav, setActiveNav] = useState('');
 
   return (
-    <div className="flex w-full flex-col bg-muted/40">
+    <div className="flex w-full flex-col bg-gray-100">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col bg-red-700 sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 py-4">
           <div className="flex h-16 shrink-0 items-center px-4">
@@ -205,8 +205,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </Button>
         </div>
       </aside>
-      <div className="flex flex-col sm:gap-6 sm:py-0 sm:pl-60">
-        <header className="sticky z-10 flex h-40 items-center gap-4 border-b bg-background px-4 sm:h-20 sm:justify-end sm:border-0 sm:bg-red-700 sm:px-12">
+      <div className="flex flex-col sm:py-0 sm:pl-60">
+        <header className=" z-10 flex h-20 items-center bg-background px-4 sm:h-20 sm:justify-end sm:border-0 sm:bg-red-700 sm:px-12">
           <Progress />
           <Drawer>
             <DrawerTrigger asChild>
@@ -308,7 +308,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             </DrawerContent>
           </Drawer>
         </header>
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+        <main className="flex-1 items-start bg-red-700 sm:py-0 sm:px-0 md:gap-8">
           {children}
         </main>
       </div>

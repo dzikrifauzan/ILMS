@@ -1,13 +1,5 @@
 'use client';
-import {
-  Camera,
-  Upload,
-  FilePlus,
-  Trash2,
-  Save,
-  Pencil,
-  Trash,
-} from 'lucide-react';
+import { Camera, Upload, FilePlus, Trash2, Save, Pencil } from 'lucide-react';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -120,7 +112,7 @@ const documents: ProcessElement[] = [
 export const CreationForm = () => {
   const [User] = useUser();
   return (
-    <div className="bg-white space-y-4">
+    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5">
       <div className="mb-6 text-xl font-semibold">Creation Form</div>
       <div className="mb-6">
         <div className="mb-6 flex items-center justify-between">

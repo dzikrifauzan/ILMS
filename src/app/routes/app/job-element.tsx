@@ -7,6 +7,7 @@ import {
   Plus,
   Pencil,
   Search,
+  Trash,
 } from 'lucide-react';
 import * as React from 'react';
 import { useState } from 'react';
@@ -27,100 +28,110 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-interface JobCategory {
+interface JobElement {
   id: number;
-  categoryId: string;
+  elementId: string;
   category: string;
+  elementName: string;
+  manual: string;
+  walking: string;
+  driving: string;
   createdBy: string;
   createdDate: string;
-  changedBy: string;
-  changeDate: string;
 }
 
-export const JobCategoriesTable = () => {
-  const categories: JobCategory[] = [
+export const JobElementTable = () => {
+  const elements: JobElement[] = [
     {
       id: 1,
-      categoryId: 'JC10412/20/000009',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000009',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
     {
       id: 2,
-      categoryId: 'JC10412/20/000008',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000008',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
     {
       id: 3,
-      categoryId: 'JC10412/20/000007',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000007',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
     {
       id: 4,
-      categoryId: 'JC10412/20/000006',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000006',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
     {
       id: 5,
-      categoryId: 'JC10412/20/000005',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000005',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
     {
       id: 6,
-      categoryId: 'JC10412/20/000004',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000004',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
     {
       id: 7,
-      categoryId: 'JC10412/20/000003',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000003',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
     {
       id: 8,
-      categoryId: 'JC10412/20/000002',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 9,
-      categoryId: 'JC10412/20/000001',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
+      elementId: 'JC10412/20/000002',
+      category: 'Preparation',
+      elementName: 'Line Auditor',
+      manual: '10 kg',
+      walking: '10M',
+      driving: '10M',
+      createdBy: 'Admin',
+      createdDate: '20 Dec 2024',
     },
   ];
+
   const totalPages = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -133,47 +144,49 @@ export const JobCategoriesTable = () => {
   };
 
   return (
-    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5">
+    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5 overflow-y-auto">
       <div className="flex justify-between items-center mb-6">
-        <div className="text-xl font-semibold">Job Categories</div>
-        <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800 ">
+        <div className="text-xl font-semibold">Job Element</div>
+        <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800">
           <div className="flex cursor-pointer items-center gap-2">
             <Plus className="size-4" />
             <span>Add</span>
           </div>
         </Button>
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-4">
         <TableElement>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[50px]">No.</TableHead>
-              <TableHead>Document No.</TableHead>
-              <TableHead>Document Title</TableHead>
+              <TableHead>Element ID</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Element Name</TableHead>
+              <TableHead>Manual</TableHead>
+              <TableHead>Walking</TableHead>
+              <TableHead>Driving</TableHead>
               <TableHead>Created By</TableHead>
-              <TableHead>Created Date</TableHead>
-              <TableHead>Change By</TableHead>
-              <TableHead>Change Date</TableHead>
+              <TableHead>Created Dt</TableHead>
               <TableHead className="w-[100px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {categories.map((doc: JobCategory, index: number) => (
-              <TableRow key={doc.id}>
+            {elements.map((element: JobElement, index: number) => (
+              <TableRow key={element.id}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{doc.categoryId}</TableCell>
-                <TableCell>{doc.category}</TableCell>
-
-                <TableCell>{doc.createdBy}</TableCell>
-                <TableCell>{doc.createdDate}</TableCell>
-                <TableCell>{doc.changedBy}</TableCell>
-                <TableCell>{doc.changeDate}</TableCell>
+                <TableCell>{element.elementId}</TableCell>
+                <TableCell>{element.category}</TableCell>
+                <TableCell>{element.elementName}</TableCell>
+                <TableCell>{element.manual}</TableCell>
+                <TableCell>{element.walking}</TableCell>
+                <TableCell>{element.driving}</TableCell>
+                <TableCell>{element.createdBy}</TableCell>
+                <TableCell>{element.createdDate}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
                     <Button variant="ghost" size="icon" className="size-8">
                       <Pencil className="size-4" />
                     </Button>
-
                     <Dialog>
                       <DialogTrigger asChild></DialogTrigger>
                       <ConfirmationDialog
@@ -196,7 +209,7 @@ export const JobCategoriesTable = () => {
         </TableElement>
 
         {/* Filter */}
-        <div className="w-[250px] h-[275px] p-4 bg-gray-50 rounded-lg space-y-4">
+        <div className="w-[250px] h-fit p-4 bg-gray-100 rounded-lg space-y-4">
           <div className="text-sm font-medium">Filter</div>
           <div className="space-y-4">
             <div>
@@ -226,13 +239,13 @@ export const JobCategoriesTable = () => {
               />
             </div>
             <div className="flex justify-center gap-2">
-              <Button className=" flex px-1 items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <Button className="flex px-1 items-center rounded text-white bg-red-700 hover:bg-red-800">
                 <div className="flex cursor-pointer items-center gap-2">
-                  <Trash2 className="size-4" />
-                  <span>Delete</span>
+                  <Trash className="size-4" />
+                  <span>Clear</span>
                 </div>
               </Button>
-              <Button className="flex  px-1 items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <Button className="flex px-1 items-center rounded text-black bg-white hover:bg-white/30">
                 <div className="flex cursor-pointer items-center gap-2">
                   <Search className="size-4" />
                   <span>Search</span>
@@ -242,18 +255,16 @@ export const JobCategoriesTable = () => {
           </div>
         </div>
       </div>
+
       {/* Pagination */}
-      <div className="flex items-center justify-between px-2 py-20">
+      <div className="flex items-center justify-between px-2 py-20 mb-20">
         <Button
           variant="outline"
           size="sm"
           onClick={handlePrevious}
           disabled={currentPage === 1}
         >
-          <div className="flex cursor-pointer items-center">
-            <ChevronLeft className="size-4" />
-            <span></span>
-          </div>
+          <ChevronLeft className="size-4" />
         </Button>
 
         <div className="flex items-center gap-1">
@@ -261,16 +272,14 @@ export const JobCategoriesTable = () => {
             {currentPage} of {totalPages}
           </span>
         </div>
+
         <Button
           variant="outline"
           size="sm"
           onClick={handleNext}
           disabled={currentPage === totalPages}
         >
-          <div className="flex cursor-pointer items-center">
-            <ChevronRight className="size-4" />
-            <span></span>
-          </div>
+          <ChevronRight className="size-4" />
         </Button>
       </div>
     </div>

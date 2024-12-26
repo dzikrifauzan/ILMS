@@ -107,6 +107,18 @@ export const createAppRouter = () =>
         {
           path: paths.app.masterData.JobElements.path,
           lazy: async () => {
+            const { JobElementTable } = await import(
+              './routes/app/job-element'
+            );
+            return {
+              Component: JobElementTable,
+            };
+          },
+          ErrorBoundary: AppRootErrorBoundary,
+        },
+        {
+          path: paths.app.masterData.JobElements.path,
+          lazy: async () => {
             const { ApprovalStatus } = await import(
               './routes/app/approval-status'
             );

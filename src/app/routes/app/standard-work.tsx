@@ -6,14 +6,17 @@ import {
   Download,
   Pencil,
   Search,
-  Trash,
   Trash2,
 } from 'lucide-react';
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ContentLayout } from '@/components/layouts';
 import { Button } from '@/components/ui/button';
+import {
+  ConfirmationDialog,
+  Dialog,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -30,12 +33,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Input } from 'postcss';
-import {
-  ConfirmationDialog,
-  Dialog,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 
 type Document = {
   id: number;
@@ -154,7 +151,7 @@ export function DocumentTable() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5">
       <div className="mb-6 text-xl font-semibold">Sw Inquiry</div>
       <div className="space-y-6">
         <div className="flex items-end gap-4">
@@ -299,7 +296,7 @@ export function DocumentTable() {
         </TableElement>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between px-2 py-4">
+        <div className="flex items-center justify-between px-2 py-10">
           <Button
             variant="outline"
             size="sm"

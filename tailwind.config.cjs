@@ -3,8 +3,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-    darkMode: ['class'],
-    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: ['class'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
   	container: {
   		center: 'true',
@@ -98,5 +98,5 @@ module.exports = {
   		}
   	}
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography'), require('tailwind-scrollbar-hide')]
 };
