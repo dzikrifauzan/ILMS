@@ -141,6 +141,9 @@ const documents: Document[] = [
 export function DocumentTable() {
   const totalPages = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [filteredDocument, setFilteredApprovals] =
+    useState<Document[]>(documents);
 
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -149,29 +152,35 @@ export function DocumentTable() {
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
+  const handleSearch = () => {
+    const filteredData = documents.filter((item) => {
+      return statusFilter === 'All' || item.status === statusFilter;
+    });
+    setFilteredApprovals(filteredData);
+  };
 
   return (
-    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5">
+    <div className="m-5 overflow-x-auto rounded-3xl bg-white p-5">
       <div className="mb-6 text-xl font-semibold">Sw Inquiry</div>
       <div className="space-y-6">
-        <div className="flex items-end gap-4">
-          <div className="space-y-1.5">
+        <div className="flex flex-wrap flex-col gap-4 md:flex-row md:items-end">
+          <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Status</Label>
-            <Select>
-              <SelectTrigger className="w-[200px]">
+            <Select onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="Draft">Draft</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <div className="space-y-1.5">
+          {/* <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Division</Label>
             <Select>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -179,12 +188,12 @@ export function DocumentTable() {
                 <SelectItem value="div2">Division 2</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
 
-          <div className="space-y-1.5">
+          {/* <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Departement</Label>
             <Select>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -192,11 +201,11 @@ export function DocumentTable() {
                 <SelectItem value="dept2">Departement 2</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-1.5">
+          </div> */}
+          {/* <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Section</Label>
             <Select>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -204,11 +213,11 @@ export function DocumentTable() {
                 <SelectItem value="sect2">Section 2</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-1.5">
+          </div> */}
+          {/* <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Line</Label>
             <Select>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -216,11 +225,14 @@ export function DocumentTable() {
                 <SelectItem value="line2">Line 2</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
 
-          <div className="space-y-1.5">
+          <div className="w-full space-y-1.5 md:w-auto">
             <div className="flex gap-2">
-              <Button className="flex items-center px-1 rounded bg-white/40 hover:bg-black/10 text-black/70">
+              <Button
+                onClick={handleSearch}
+                className="flex w-full items-center rounded bg-white/40 px-1 text-black/70 hover:bg-black/10 md:w-auto"
+              >
                 <div className="flex cursor-pointer items-center gap-2">
                   <Search className="size-4" />
                   <span>Search</span>
@@ -229,8 +241,8 @@ export function DocumentTable() {
             </div>
           </div>
 
-          <div className="ml-auto">
-            <Button className="flex items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+          <div className="w-full md:ml-auto md:w-auto">
+            <Button className="flex w-full items-center rounded bg-red-700 text-white hover:bg-red-800 md:w-auto">
               <div className="flex cursor-pointer items-center gap-2">
                 <Download className="size-4" />
                 <span>Download</span>
@@ -239,61 +251,63 @@ export function DocumentTable() {
           </div>
         </div>
         {/* Table */}
-        <TableElement>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[50px]">No.</TableHead>
-              <TableHead>Document No.</TableHead>
-              <TableHead>Document Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created By</TableHead>
-              <TableHead>Created Date</TableHead>
-              <TableHead>Change By</TableHead>
-              <TableHead>Change Date</TableHead>
-              <TableHead className="w-[100px]">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {documents.map((doc: Document, index: number) => (
-              <TableRow key={doc.id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{doc.documentNo}</TableCell>
-                <TableCell>{doc.documentTitle}</TableCell>
-                <TableCell>
-                  <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
-                    {doc.status}
-                  </span>
-                </TableCell>
-                <TableCell>{doc.createdBy}</TableCell>
-                <TableCell>{doc.createdDate}</TableCell>
-                <TableCell>{doc.changeBy}</TableCell>
-                <TableCell>{doc.changeDate}</TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="size-8">
-                      <Pencil className="size-4" />
-                    </Button>
-
-                    <Dialog>
-                      <DialogTrigger asChild></DialogTrigger>
-                      <ConfirmationDialog
-                        title="Delete Element"
-                        triggerButton={
-                          <Button variant="ghost">
-                            <Trash2 className="size-4" />
-                          </Button>
-                        }
-                        confirmButton={
-                          <Button variant="destructive">Delete</Button>
-                        }
-                      />
-                    </Dialog>
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <TableElement>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[50px]">No.</TableHead>
+                <TableHead>Document No.</TableHead>
+                <TableHead>Document Title</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Created By</TableHead>
+                <TableHead>Created Date</TableHead>
+                <TableHead>Change By</TableHead>
+                <TableHead>Change Date</TableHead>
+                <TableHead className="w-[100px]">Action</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </TableElement>
+            </TableHeader>
+            <TableBody>
+              {filteredDocument.map((doc: Document, index: number) => (
+                <TableRow key={doc.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{doc.documentNo}</TableCell>
+                  <TableCell>{doc.documentTitle}</TableCell>
+                  <TableCell>
+                    <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                      {doc.status}
+                    </span>
+                  </TableCell>
+                  <TableCell>{doc.createdBy}</TableCell>
+                  <TableCell>{doc.createdDate}</TableCell>
+                  <TableCell>{doc.changeBy}</TableCell>
+                  <TableCell>{doc.changeDate}</TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button variant="ghost" size="icon" className="size-8">
+                        <Pencil className="size-4" />
+                      </Button>
+
+                      <Dialog>
+                        <DialogTrigger asChild></DialogTrigger>
+                        <ConfirmationDialog
+                          title="Delete Element"
+                          triggerButton={
+                            <Button variant="ghost">
+                              <Trash2 className="size-4" />
+                            </Button>
+                          }
+                          confirmButton={
+                            <Button variant="destructive">Delete</Button>
+                          }
+                        />
+                      </Dialog>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </TableElement>
+        </div>
 
         {/* Pagination */}
         <div className="flex items-center justify-between px-2 py-10">
@@ -303,7 +317,7 @@ export function DocumentTable() {
             onClick={handlePrevious}
             disabled={currentPage === 1}
           >
-            <div className="flex cursor-pointer items-centers">
+            <div className="flex cursor-pointer items-center">
               <ChevronLeft className="size-4" />
               <span></span>
             </div>

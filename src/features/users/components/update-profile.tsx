@@ -12,6 +12,7 @@ export const UpdateProfile = () => {
 
   return (
     <FormDrawer
+      color="primary"
       isDone={false}
       triggerButton={
         <Button icon={<Pen className="size-4" />} size="sm">

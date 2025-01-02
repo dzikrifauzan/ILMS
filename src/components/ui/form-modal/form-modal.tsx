@@ -2,10 +2,10 @@
 
 'use client';
 
+import { Plus } from 'lucide-react';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -22,15 +22,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus } from 'lucide-react';
 
 interface JobFormData {
   category: string;
   element: string;
   gentanI: {
-    manual: boolean;
-    walking: boolean;
-    driving: boolean;
+    manual: number;
+    walking: number;
+    driving: number;
   };
 }
 
@@ -39,23 +38,23 @@ export default function JobFormModal() {
     category: '',
     element: '',
     gentanI: {
-      manual: false,
-      walking: false,
-      driving: false,
+      manual: 0,
+      walking: 0,
+      driving: 0,
     },
   });
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800 ">
+        <Button className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800">
           <div className="flex cursor-pointer items-center gap-2">
             <Plus className="size-4" />
             <span>Add</span>
           </div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-white">
+      <DialogContent className="bg-white sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Job Form</DialogTitle>
         </DialogHeader>
@@ -65,7 +64,10 @@ export default function JobFormModal() {
             <Select
               value={formData.category}
               onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, category: value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  category: value,
+                }))
               }
             >
               <SelectTrigger id="category">
@@ -80,20 +82,23 @@ export default function JobFormModal() {
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="category">Job Element</Label>
+            <Label htmlFor="element">Job Element</Label>
             <Select
-              value={formData.category}
+              value={formData.element}
               onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, category: value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  element: value,
+                }))
               }
             >
-              <SelectTrigger id="category">
+              <SelectTrigger id="element">
                 <SelectValue placeholder="Select Job Element" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="category1">Element 1</SelectItem>
-                <SelectItem value="category2">Element 2</SelectItem>
-                <SelectItem value="category3">Element 3</SelectItem>
+                <SelectItem value="element1">Element 1</SelectItem>
+                <SelectItem value="element2">Element 2</SelectItem>
+                <SelectItem value="element3">Element 3</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -105,13 +110,13 @@ export default function JobFormModal() {
                 <Input
                   type="number"
                   id="manual"
-                  value={formData.gentanI.manual ? 1 : 0}
+                  value={formData.gentanI.manual || ''}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
                       gentanI: {
                         ...prev.gentanI,
-                        manual: Boolean(Number(e.target.value)),
+                        manual: Number(e.target.value),
                       },
                     }))
                   }
@@ -129,13 +134,13 @@ export default function JobFormModal() {
                 <Input
                   type="number"
                   id="walking"
-                  value={formData.gentanI.walking ? 1 : 0}
+                  value={formData.gentanI.walking || ''}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
                       gentanI: {
                         ...prev.gentanI,
-                        walking: Boolean(Number(e.target.value)),
+                        walking: Number(e.target.value),
                       },
                     }))
                   }
@@ -153,13 +158,13 @@ export default function JobFormModal() {
                 <Input
                   type="number"
                   id="driving"
-                  value={formData.gentanI.driving ? 1 : 0}
+                  value={formData.gentanI.driving || ''}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
                       gentanI: {
                         ...prev.gentanI,
-                        driving: Boolean(Number(e.target.value)),
+                        driving: Number(e.target.value),
                       },
                     }))
                   }
@@ -170,7 +175,7 @@ export default function JobFormModal() {
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Driving
-                </label>{' '}
+                </label>
               </div>
             </div>
           </div>

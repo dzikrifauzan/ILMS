@@ -45,15 +45,29 @@ function Metric({
 
 export function DashboardRoute() {
   return (
-    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5">
+    <div className="p-5 rounded-3xl bg-white m-5">
       <div className="mb-6 text-xl font-semibold">Dashboard</div>
       <div className="rounded-lg bg-white p-2 shadow-sm sm:p-1">
-        <div className="flex items-center justify-end">
-          <Metric label="Std. Working Time" value={455} showIndicator={false} />
-          <Metric label="Eff. Target" value={437} showIndicator={false} />
-          <Metric label="Ave. Workload" value={455} percentage={10} />
-          <Metric label="Max. Workload" value={495} percentage={22} />
-          <Metric label="Min. Workload" value={430} percentage={10} />
+        <div className="flex flex-wrap items-center justify-between space-x-4 sm:space-x-2">
+          <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
+            <Metric
+              label="Std. Working Time"
+              value={455}
+              showIndicator={false}
+            />
+          </div>
+          <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
+            <Metric label="Eff. Target" value={437} showIndicator={false} />
+          </div>
+          <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
+            <Metric label="Ave. Workload" value={455} percentage={10} />
+          </div>
+          <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
+            <Metric label="Max. Workload" value={495} percentage={22} />
+          </div>
+          <div className="flex flex-col sm:flex-row items-center">
+            <Metric label="Min. Workload" value={430} percentage={10} />
+          </div>
         </div>
       </div>
     </div>

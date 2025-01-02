@@ -144,7 +144,7 @@ export const JobElementTable = () => {
   };
 
   return (
-    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5 overflow-y-auto">
+    <div className=" p-5 rounded-3xl bg-white m-5 overflow-y-auto">
       <div className="flex justify-between items-center mb-6">
         <div className="text-xl font-semibold">Job Element</div>
         <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800">

@@ -1,4 +1,3 @@
-import { ContentLayout } from '@/components/layouts';
 import { UpdateProfile } from '@/features/users/components/update-profile';
 import { useUser } from '@/stores/auth/hooks';
 
@@ -21,7 +20,7 @@ export const ProfileRoute = () => {
   if (!user.data) return null;
 
   return (
-    <div className=" p-5 rounded-3xl bg-white mr-5 mb-5">
+    <div className=" p-5 rounded-3xl bg-white m-5">
       <div className="px-4 py-5 sm:px-6">
         <div className="flex justify-between">
           <h3 className="text-lg font-medium leading-6 text-gray-900">
