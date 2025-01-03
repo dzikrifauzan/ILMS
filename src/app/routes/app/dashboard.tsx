@@ -45,7 +45,16 @@ function Metric({
 
 export function DashboardRoute() {
   return (
-    <div className="p-5 rounded-3xl bg-white m-5">
+    <div
+      className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
+      style={{
+        height: 'calc(100vh - 40px)',
+        marginTop: '20px',
+        marginBottom: '20px',
+        marginRight: '20px',
+        scrollbarWidth: 'none',
+      }}
+    >
       <div className="mb-6 text-xl font-semibold">Dashboard</div>
       <div className="rounded-lg bg-white p-2 shadow-sm sm:p-1">
         <div className="flex flex-wrap items-center justify-between space-x-4 sm:space-x-2">

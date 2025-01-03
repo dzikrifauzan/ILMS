@@ -185,144 +185,171 @@ export const CreationForm = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
   return (
-    <div className="m-5 rounded-3xl bg-white p-5">
+    <div
+      className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
+      style={{
+        height: 'calc(100vh - 40px)',
+        margin: '20px',
+        scrollbarWidth: 'none',
+      }}
+    >
       <div className="mb-6 text-xl font-semibold">Creation Form</div>
-      <div className="mb-6">
-        <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <Select>
-            <SelectTrigger className="w-full sm:w-[200px]">
-              <SelectValue placeholder="Tack Time" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="time1">Tack Time 1.6</SelectItem>
-              <SelectItem value="time2">Tack Time 2.1</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button className="flex w-full items-center rounded bg-red-700 px-1 text-white hover:bg-red-800 sm:w-auto">
-              <label className="flex w-full cursor-pointer items-center justify-center gap-2">
-                <input type="file" className="hidden" />
-                <Upload className="size-4" />
-                <span>Upload</span>
-              </label>
-            </Button>
-            <Button className="flex w-full items-center rounded bg-red-700 px-1 text-white hover:bg-red-800 sm:w-auto">
-              <div className="flex w-full cursor-pointer items-center justify-center gap-2">
-                <Save className="size-4" />
-                <span>Save Draft</span>
-              </div>
-            </Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="flex w-full items-center rounded bg-red-700 px-1 text-white hover:bg-red-800 sm:w-auto">
-                  <div className="flex w-full cursor-pointer items-center justify-center gap-2">
-                    <FilePlus className="size-4" />
-                    <span>Preview</span>
-                  </div>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-[95vw] sm:w-auto">
-                <div className="grid gap-6 py-4">
-                  <div className="flex flex-col gap-4">
+      <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="w-full bg-white rounded p-2 flex-row">
+          <div className="flex flex-row justify-between">
+            <Select>
+              <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectValue placeholder="Tack Time" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="time1">Tack Time 1.6</SelectItem>
+                <SelectItem value="time2">Tack Time 2.1</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex flex-col gap-2 sm:flex-row ">
+              <Button className="flex w-full items-center rounded bg-red-700 px-1 text-white hover:bg-red-800 sm:w-auto">
+                <label className="flex w-full cursor-pointer items-center justify-center gap-2">
+                  <input type="file" className="hidden" />
+                  <Upload className="size-4" />
+                  <span>Upload</span>
+                </label>
+              </Button>
+              <Button className="flex w-full items-center rounded bg-red-700 px-1 text-white hover:bg-red-800 sm:w-auto">
+                <div className="flex w-full cursor-pointer items-center justify-center gap-2">
+                  <Save className="size-4" />
+                  <span>Save Draft</span>
+                </div>
+              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="flex w-full items-center rounded bg-red-700 px-1 text-white hover:bg-red-800 sm:w-auto">
+                    <div className="flex w-full cursor-pointer items-center justify-center gap-2">
+                      <FilePlus className="size-4" />
+                      <span>Preview</span>
+                    </div>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[95vw] sm:w-auto">
+                  <div className="grid gap-6 py-4">
                     <div className="flex flex-col gap-4">
-                      <div className="space-y-2">
-                        <h3 className="font-medium">Information</h3>
-                        <div className="grid grid-cols-2 gap-2">
-                          <div>
-                            <span className="text-sm text-gray-600">
-                              Author:
-                            </span>
-                            <span className="ml-2 text-sm">
-                              {User.data?.firstName}
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-sm text-gray-600">
-                              Status:
-                            </span>
-                            <span className="ml-2 text-sm">
-                              {formData.information.status}
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-sm text-gray-600">
-                              Revision:
-                            </span>
-                            <span className="ml-2 text-sm">
-                              {formData.information.revision}
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-sm text-gray-600">
-                              Manpower ID:
-                            </span>
-                            <span className="ml-2 text-sm">
-                              {formData.information.manpowerId}
-                            </span>
+                      <div className="flex flex-col gap-4">
+                        <div className="space-y-2">
+                          <h3 className="font-medium">Information</h3>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <span className="text-sm text-gray-600">
+                                Author:
+                              </span>
+                              <span className="ml-2 text-sm">
+                                {User.data?.firstName}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-sm text-gray-600">
+                                Status:
+                              </span>
+                              <span className="ml-2 text-sm">
+                                {formData.information.status}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-sm text-gray-600">
+                                Revision:
+                              </span>
+                              <span className="ml-2 text-sm">
+                                {formData.information.revision}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-sm text-gray-600">
+                                Manpower ID:
+                              </span>
+                              <span className="ml-2 text-sm">
+                                {formData.information.manpowerId}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="font-medium">Document Content</h3>
-                        <div className="rounded-lg border p-4">
-                          <p className="text-sm text-gray-600">
-                            Document preview will be displayed here
-                          </p>
+                        <div className="space-y-2">
+                          <h3 className="font-medium">Document Content</h3>
+                          <div className="rounded-lg border p-4">
+                            <p className="text-sm text-gray-600">
+                              Document preview will be displayed here
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </DialogContent>
-            </Dialog>{' '}
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-2 sm:flex-row mt-5">
+            <Input
+              placeholder="Add Process Name"
+              className="w-full sm:flex-1"
+            />
+            <Select defaultValue="gentan-1">
+              <SelectTrigger className="w-full sm:w-[150px]">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="gentan-1">Gentan-I</SelectItem>
+                <SelectItem value="gentan-2">TSKK</SelectItem>
+              </SelectContent>
+            </Select>
+            <Dialog>
+              <DialogTrigger asChild></DialogTrigger>
+              <JobFormModal />
+            </Dialog>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-6">
-          {/* Left Column */}
-          <div className="space-y-6 lg:col-span-1">
-            <div className="space-y-4">
-              <h3 className="font-medium">Information</h3>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <span className="w-32 text-sm text-gray-600">
-                    {formData.information.author}
-                  </span>
-                  <span className="text-sm">: {User.data?.firstName}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-32 text-sm text-gray-600">Status</span>
-                  <span className="text-sm">
-                    : {formData.information.status}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-32 text-sm text-gray-600">Revision</span>
-                  <span className="text-sm">
-                    : {formData.information.revision}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <label
-                    htmlFor="manpower"
-                    className="w-32 text-sm text-gray-600"
-                  >
-                    Manpower ID
-                  </label>
-                  <span className="text-sm">:</span>
-                  <Input
-                    id="manpower"
-                    type="number"
-                    placeholder="No."
-                    maxLength={7}
-                    max={9999999}
-                    className="ml-2 h-7 w-16 rounded-lg border-2 border-gray-300 px-2 py-1 text-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                </div>
+      </div>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
+        {/* Left Column */}
+        <div className="space-y-6 lg:col-span-1">
+          <div className="space-y-4 bg-white p-2 rounded">
+            <h3 className="font-medium">Information</h3>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <span className="w-32 text-sm text-gray-600">
+                  {formData.information.author}
+                </span>
+                <span className="text-sm">: {User.data?.firstName}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="w-32 text-sm text-gray-600">Status</span>
+                <span className="text-sm">: {formData.information.status}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="w-32 text-sm text-gray-600">Revision</span>
+                <span className="text-sm">
+                  : {formData.information.revision}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <label
+                  htmlFor="manpower"
+                  className="w-32 text-sm text-gray-600"
+                >
+                  Manpower ID
+                </label>
+                <span className="text-sm">:</span>
+                <Input
+                  id="manpower"
+                  type="number"
+                  placeholder="No."
+                  maxLength={7}
+                  max={9999999}
+                  className="ml-2 h-7 w-16 rounded-lg border-2 border-gray-300 px-2 py-1 text-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
               </div>
             </div>
-
-            <div className="space-y-4">
+          </div>
+          <div className="space-y-6 bg-white p-2 rounded">
+            <div>
               <h3 className="font-medium">Upload Image</h3>
               <div className="rounded-lg border-2 border-dashed p-8">
                 <div className="flex flex-col items-center justify-center text-gray-500">
@@ -335,7 +362,7 @@ export const CreationForm = () => {
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               {[
                 'Location',
                 'Sub Location',
@@ -364,114 +391,90 @@ export const CreationForm = () => {
               ))}
             </div>
           </div>
+        </div>
+        {/* Right Column */}
+        <div className="lg:col-span-5">
+          {/* Table */}
+          <div className="bg-white p-2 pt-5 rounded h-full">
+            <TableElement>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">No.</TableHead>
+                  <TableHead className="w-[200px]">Element Job</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead className="w-[10px]">Manual</TableHead>
+                  <TableHead className="w-[10px]">Walking</TableHead>
+                  <TableHead className="w-[150px]">Driving</TableHead>
+                  <TableHead>Distance</TableHead>
+                  <TableHead>Frequency</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead className="w-[100px]">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {documents.map((doc: ProcessElement, index: number) => (
+                  <TableRow key={doc.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{doc.elementJob}</TableCell>
+                    <TableCell>{doc.category}</TableCell>
+                    <TableCell>{doc.manual}</TableCell>
+                    <TableCell>{doc.walking}</TableCell>
+                    <TableCell>{doc.driving}</TableCell>
+                    <TableCell>{doc.distance}</TableCell>
+                    <TableCell>{doc.frequency}</TableCell>
+                    <TableCell>{doc.total}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="icon" className="size-8">
+                          <Pencil className="size-4" />
+                        </Button>
 
-          {/* Right Column */}
-          <div className="lg:col-span-5">
-            <div className="mb-4 flex flex-col items-center gap-2 sm:flex-row">
-              <Input
-                placeholder="Add Process Name"
-                className="w-full sm:flex-1"
-              />
-              <Select defaultValue="gentan-1">
-                <SelectTrigger className="w-full sm:w-[150px]">
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="gentan-1">Gentan-I</SelectItem>
-                  <SelectItem value="gentan-2">TSKK</SelectItem>
-                </SelectContent>
-              </Select>
-              <Dialog>
-                <DialogTrigger asChild></DialogTrigger>
-                <JobFormModal />
-              </Dialog>
-            </div>
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <TableElement>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[50px]">No.</TableHead>
-                    <TableHead className="w-[200px]">Element Job</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead className="w-[10px]">Manual</TableHead>
-                    <TableHead className="w-[10px]">Walking</TableHead>
-                    <TableHead className="w-[150px]">Driving</TableHead>
-                    <TableHead>Distance</TableHead>
-                    <TableHead>Frequency</TableHead>
-                    <TableHead>Total</TableHead>
-                    <TableHead className="w-[100px]">Action</TableHead>
+                        <Dialog>
+                          <DialogTrigger asChild></DialogTrigger>
+                          <ConfirmationDialog
+                            title="Delete Element"
+                            body="are you sure you want to delete?"
+                            triggerButton={
+                              <Button variant="ghost">
+                                <Trash2 className="size-4" />
+                              </Button>
+                            }
+                            confirmButton={
+                              <Button variant="destructive">Delete</Button>
+                            }
+                          />
+                        </Dialog>
+                      </div>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {documents.map((doc: ProcessElement, index: number) => (
-                    <TableRow key={doc.id}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{doc.elementJob}</TableCell>
-                      <TableCell>{doc.category}</TableCell>
-                      <TableCell>{doc.manual}</TableCell>
-                      <TableCell>{doc.walking}</TableCell>
-                      <TableCell>{doc.driving}</TableCell>
-                      <TableCell>{doc.distance}</TableCell>
-                      <TableCell>{doc.frequency}</TableCell>
-                      <TableCell>{doc.total}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="size-8"
-                          >
-                            <Pencil className="size-4" />
-                          </Button>
+                ))}
+              </TableBody>
+            </TableElement>
+            {/* Pagination */}
+            <div className="mb-20 flex items-center justify-between px-2 mt-20">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePrevious}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="size-4" />
+              </Button>
 
-                          <Dialog>
-                            <DialogTrigger asChild></DialogTrigger>
-                            <ConfirmationDialog
-                              title="Delete Element"
-                              body="are you sure you want to delete?"
-                              triggerButton={
-                                <Button variant="ghost">
-                                  <Trash2 className="size-4" />
-                                </Button>
-                              }
-                              confirmButton={
-                                <Button variant="destructive">Delete</Button>
-                              }
-                            />
-                          </Dialog>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </TableElement>
-              {/* Pagination */}
-              <div className="mb-20 flex items-center justify-between px-2 py-20">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handlePrevious}
-                  disabled={currentPage === 1}
-                >
-                  <ChevronLeft className="size-4" />
-                </Button>
-
-                <div className="flex items-center gap-1">
-                  <span className="text-sm text-gray-700">
-                    {currentPage} of {totalPages}
-                  </span>
-                </div>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleNext}
-                  disabled={currentPage === totalPages}
-                >
-                  <ChevronRight className="size-4" />
-                </Button>
+              <div className="flex items-center gap-1">
+                <span className="text-sm text-gray-700">
+                  {currentPage} of {totalPages}
+                </span>
               </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+              >
+                <ChevronRight className="size-4" />
+              </Button>
             </div>
           </div>
         </div>

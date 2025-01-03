@@ -171,7 +171,16 @@ export const ApprovalStatus = () => {
     setFilteredApprovals(filteredData);
   };
   return (
-    <div className="m-5 rounded-3xl bg-white p-5">
+    <div
+      className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
+      style={{
+        height: 'calc(100vh - 40px)',
+        marginTop: '20px',
+        marginBottom: '20px',
+        marginRight: '20px',
+        scrollbarWidth: 'none',
+      }}
+    >
       <div className="mb-6 text-xl font-semibold">Approval Status</div>
       <div className="space-y-6">
         {/* Filters */}

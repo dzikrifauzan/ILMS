@@ -115,7 +115,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [activeNav, setActiveNav] = useState('');
 
   return (
-    <div className="flex w-full flex-col bg-gray-100">
+    <div className="flex w-full flex-col bg-gray-100 overflow-hidden">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col bg-red-700 sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 py-4">
           <div className="flex h-16 mt-4 shrink-0">

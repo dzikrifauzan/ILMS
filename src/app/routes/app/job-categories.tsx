@@ -7,6 +7,7 @@ import {
   Plus,
   Pencil,
   Search,
+  Trash,
 } from 'lucide-react';
 import * as React from 'react';
 import { useState } from 'react';
@@ -41,7 +42,7 @@ export const JobCategoriesTable = () => {
   const categories: JobCategory[] = [
     {
       id: 1,
-      categoryId: 'JC10412/20/000009',
+      categoryId: 'PC202412000009',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -50,7 +51,7 @@ export const JobCategoriesTable = () => {
     },
     {
       id: 2,
-      categoryId: 'JC10412/20/000008',
+      categoryId: 'PC202412000008',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -59,7 +60,7 @@ export const JobCategoriesTable = () => {
     },
     {
       id: 3,
-      categoryId: 'JC10412/20/000007',
+      categoryId: 'PC202412000007',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -68,7 +69,7 @@ export const JobCategoriesTable = () => {
     },
     {
       id: 4,
-      categoryId: 'JC10412/20/000006',
+      categoryId: 'PC202412000006',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -77,7 +78,7 @@ export const JobCategoriesTable = () => {
     },
     {
       id: 5,
-      categoryId: 'JC10412/20/000005',
+      categoryId: 'PC202412000005',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -86,7 +87,7 @@ export const JobCategoriesTable = () => {
     },
     {
       id: 6,
-      categoryId: 'JC10412/20/000004',
+      categoryId: 'PC202412000004',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -95,7 +96,7 @@ export const JobCategoriesTable = () => {
     },
     {
       id: 7,
-      categoryId: 'JC10412/20/000003',
+      categoryId: 'PC202412000003',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -104,16 +105,7 @@ export const JobCategoriesTable = () => {
     },
     {
       id: 8,
-      categoryId: 'JC10412/20/000002',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 9,
-      categoryId: 'JC10412/20/000001',
+      categoryId: 'PC202412000002',
       category: 'Supply Point A',
       createdBy: 'Tester',
       createdDate: '10 Dec 2024',
@@ -131,19 +123,62 @@ export const JobCategoriesTable = () => {
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
+  const [filters, setFilters] = useState({
+    categoryId: '',
+    category: '',
+  });
+
+  const [filteredCategories, setFilteredCategories] =
+    useState<JobCategory[]>(categories);
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [id]: value,
+    }));
+  };
+
+  const handleSearch = () => {
+    const filtered = categories.filter((category) => {
+      return (
+        (filters.category === '' ||
+          category.category.includes(filters.category)) &&
+        (filters.categoryId === '' ||
+          category.categoryId.includes(filters.categoryId))
+      );
+    });
+    setFilteredCategories(filtered);
+  };
+
+  const handleClear = () => {
+    setFilters({
+      categoryId: '',
+      category: '',
+    });
+    setFilteredCategories(categories);
+  };
 
   return (
-    <div className=" p-5 rounded-3xl bg-white m-5">
-      <div className="flex justify-between items-center mb-6">
+    <div
+      className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
+      style={{
+        height: 'calc(100vh - 40px)',
+        marginTop: '20px',
+        marginBottom: '20px',
+        marginRight: '20px',
+        scrollbarWidth: 'none',
+      }}
+    >
+      <div className="mb-6 flex items-center justify-between">
         <div className="text-xl font-semibold">Job Categories</div>
-        <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800 ">
+        <Button className="rounded bg-red-700 px-1 text-white hover:bg-red-800">
           <div className="flex cursor-pointer items-center gap-2">
             <Plus className="size-4" />
             <span>Add</span>
           </div>
         </Button>
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-4">
         <TableElement>
           <TableHeader>
             <TableRow>
@@ -158,7 +193,7 @@ export const JobCategoriesTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {categories.map((doc: JobCategory, index: number) => (
+            {filteredCategories.map((doc: JobCategory, index: number) => (
               <TableRow key={doc.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{doc.categoryId}</TableCell>
@@ -196,26 +231,28 @@ export const JobCategoriesTable = () => {
         </TableElement>
 
         {/* Filter */}
-        <div className="w-[250px] h-[275px] p-4 bg-gray-50 rounded-lg space-y-4">
+        <div className="h-fit w-[250px] space-y-4 rounded-lg bg-gray-100 p-4">
           <div className="text-sm font-medium">Filter</div>
           <div className="space-y-4">
             <div>
               <label
-                htmlFor="categoryName"
-                className="text-sm text-gray-600 block mb-1"
+                htmlFor="category"
+                className="mb-1 block text-sm text-gray-600"
               >
                 Category Name
               </label>
               <Input
-                id="categoryName"
+                id="category"
                 placeholder="Enter category name"
                 className="bg-white"
+                value={filters.category}
+                onChange={handleFilterChange}
               />
             </div>
             <div>
               <label
                 htmlFor="categoryId"
-                className="text-sm text-gray-600 block mb-1"
+                className="mb-1 block text-sm text-gray-600"
               >
                 Category ID
               </label>
@@ -223,16 +260,24 @@ export const JobCategoriesTable = () => {
                 id="categoryId"
                 placeholder="Enter category ID"
                 className="bg-white"
+                value={filters.categoryId}
+                onChange={handleFilterChange}
               />
             </div>
             <div className="flex justify-center gap-2">
-              <Button className=" flex px-1 items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <Button
+                onClick={handleClear}
+                className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800"
+              >
                 <div className="flex cursor-pointer items-center gap-2">
-                  <Trash2 className="size-4" />
-                  <span>Delete</span>
+                  <Trash className="size-4" />
+                  <span>Clear</span>
                 </div>
               </Button>
-              <Button className="flex  px-1 items-center rounded text-white bg-red-700 hover:bg-red-800 ">
+              <Button
+                onClick={handleSearch}
+                className="flex items-center rounded bg-white px-1 text-black hover:bg-white/30"
+              >
                 <div className="flex cursor-pointer items-center gap-2">
                   <Search className="size-4" />
                   <span>Search</span>

@@ -20,7 +20,16 @@ export const ProfileRoute = () => {
   if (!user.data) return null;
 
   return (
-    <div className=" p-5 rounded-3xl bg-white m-5">
+    <div
+      className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
+      style={{
+        height: 'calc(100vh - 40px)',
+        marginTop: '20px',
+        marginBottom: '20px',
+        marginRight: '20px',
+        scrollbarWidth: 'none',
+      }}
+    >
       <div className="px-4 py-5 sm:px-6">
         <div className="flex justify-between">
           <h3 className="text-lg font-medium leading-6 text-gray-900">

@@ -132,6 +132,48 @@ export const JobElementTable = () => {
     },
   ];
 
+  const [filters, setFilters] = useState({
+    category: '',
+    elementId: '',
+    elementName: '',
+    unit: '',
+  });
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [id]: value,
+    }));
+  };
+
+  const handleClear = () => {
+    setFilters({
+      category: '',
+      elementId: '',
+      elementName: '',
+      unit: '',
+    });
+    setFilteredElements(elements);
+  };
+  const [filteredElements, setFilteredElements] =
+    useState<JobElement[]>(elements);
+
+  const handleSearch = () => {
+    const filtered = elements.filter((element) => {
+      return (
+        (filters.category === '' ||
+          element.category.includes(filters.category)) &&
+        (filters.elementId === '' ||
+          element.elementId.includes(filters.elementId)) &&
+        (filters.elementName === '' ||
+          element.elementName.includes(filters.elementName)) &&
+        (filters.unit === '' || element.manual.includes(filters.unit)) // Misalnya, "unit" cocok dengan "manual".
+      );
+    });
+    setFilteredElements(filtered);
+  };
+
   const totalPages = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -144,10 +186,19 @@ export const JobElementTable = () => {
   };
 
   return (
-    <div className=" p-5 rounded-3xl bg-white m-5 overflow-y-auto">
-      <div className="flex justify-between items-center mb-6">
+    <div
+      className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
+      style={{
+        height: 'calc(100vh - 40px)',
+        marginTop: '20px',
+        marginBottom: '20px',
+        marginRight: '20px',
+        scrollbarWidth: 'none',
+      }}
+    >
+      <div className="mb-6 flex items-center justify-between">
         <div className="text-xl font-semibold">Job Element</div>
-        <Button className="flex items-center px-1 rounded text-white bg-red-700 hover:bg-red-800">
+        <Button className="rounded bg-red-700 px-1 text-white hover:bg-red-800">
           <div className="flex cursor-pointer items-center gap-2">
             <Plus className="size-4" />
             <span>Add</span>
@@ -171,7 +222,7 @@ export const JobElementTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {elements.map((element: JobElement, index: number) => (
+            {filteredElements.map((element: JobElement, index: number) => (
               <TableRow key={element.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{element.elementId}</TableCell>
@@ -209,43 +260,84 @@ export const JobElementTable = () => {
         </TableElement>
 
         {/* Filter */}
-        <div className="w-[250px] h-fit p-4 bg-gray-100 rounded-lg space-y-4">
+        <div className="h-fit w-[250px] space-y-4 rounded-lg bg-gray-100 p-4">
           <div className="text-sm font-medium">Filter</div>
           <div className="space-y-4">
             <div>
               <label
-                htmlFor="categoryName"
-                className="text-sm text-gray-600 block mb-1"
+                htmlFor="category"
+                className="mb-1 block text-sm text-gray-600"
               >
-                Category Name
+                Category
               </label>
               <Input
-                id="categoryName"
-                placeholder="Enter category name"
+                id="category"
+                placeholder="category"
                 className="bg-white"
+                value={filters.category}
+                onChange={handleFilterChange}
               />
             </div>
             <div>
               <label
-                htmlFor="categoryId"
-                className="text-sm text-gray-600 block mb-1"
+                htmlFor="elementId"
+                className="mb-1 block text-sm text-gray-600"
               >
-                Category ID
+                Element ID
               </label>
               <Input
-                id="categoryId"
-                placeholder="Enter category ID"
+                id="elementId"
+                placeholder="Element ID"
                 className="bg-white"
+                value={filters.elementId}
+                onChange={handleFilterChange}
+                type="text"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="elementName"
+                className="mb-1 block text-sm text-gray-600"
+              >
+                Element Name
+              </label>
+              <Input
+                id="elementName"
+                placeholder="Element Name"
+                className="bg-white"
+                value={filters.elementName}
+                onChange={handleFilterChange}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="unit"
+                className="mb-1 block text-sm text-gray-600"
+              >
+                Unit
+              </label>
+              <Input
+                id="unit"
+                placeholder="Unit"
+                className="bg-white"
+                value={filters.unit}
+                onChange={handleFilterChange}
               />
             </div>
             <div className="flex justify-center gap-2">
-              <Button className="flex px-1 items-center rounded text-white bg-red-700 hover:bg-red-800">
+              <Button
+                onClick={handleClear}
+                className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800"
+              >
                 <div className="flex cursor-pointer items-center gap-2">
                   <Trash className="size-4" />
                   <span>Clear</span>
                 </div>
               </Button>
-              <Button className="flex px-1 items-center rounded text-black bg-white hover:bg-white/30">
+              <Button
+                onClick={handleSearch}
+                className="flex items-center rounded bg-white px-1 text-black hover:bg-white/30"
+              >
                 <div className="flex cursor-pointer items-center gap-2">
                   <Search className="size-4" />
                   <span>Search</span>
@@ -257,7 +349,7 @@ export const JobElementTable = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between px-2 py-20 mb-20">
+      <div className="flex items-center justify-between px-2 py-20">
         <Button
           variant="outline"
           size="sm"
