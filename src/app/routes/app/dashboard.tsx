@@ -49,9 +49,7 @@ export function DashboardRoute() {
       className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
       style={{
         height: 'calc(100vh - 40px)',
-        marginTop: '20px',
-        marginBottom: '20px',
-        marginRight: '20px',
+        margin: '20px',
         scrollbarWidth: 'none',
       }}
     >

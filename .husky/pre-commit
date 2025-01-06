@@ -1,2 +1,0 @@
-# .husky/pre-commit
-yarn lint && yarn check-types

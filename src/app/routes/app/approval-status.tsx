@@ -175,182 +175,199 @@ export const ApprovalStatus = () => {
       className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
       style={{
         height: 'calc(100vh - 40px)',
-        marginTop: '20px',
-        marginBottom: '20px',
-        marginRight: '20px',
+        margin: '20px',
         scrollbarWidth: 'none',
       }}
     >
       <div className="mb-6 text-xl font-semibold">Approval Status</div>
       <div className="space-y-6">
         {/* Filters */}
-        <div className="flex flex-col gap-4 md:flex-row md:items-end">
-          <div className="w-full space-y-1.5 md:w-auto">
-            <Label className="text-sm text-gray-600">Status</Label>
-            <Select onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All">All</SelectItem>
-                <SelectItem value="Completed">Completed</SelectItem>
-                <SelectItem value="Pending">Pending</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="items-center bg-white rounded px-2">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
+            <div className="w-full space-y-1.5 md:w-auto">
+              <Label className="text-sm text-gray-600">Status</Label>
+              <Select onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full md:w-[200px]">
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All</SelectItem>
+                  <SelectItem value="Completed">Completed</SelectItem>
+                  <SelectItem value="Pending">Pending</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div className="w-full space-y-1.5 md:w-auto">
-            <Label className="text-sm text-gray-600">Division</Label>
-            <Select onValueChange={setDivFilter}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All">All</SelectItem>
-                <SelectItem value="R&D">R&D</SelectItem>
-                <SelectItem value="HR">HR</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            <div className="w-full space-y-1.5 md:w-auto">
+              <Label className="text-sm text-gray-600">Division</Label>
+              <Select onValueChange={setDivFilter}>
+                <SelectTrigger className="w-full md:w-[200px]">
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All</SelectItem>
+                  <SelectItem value="R&D">R&D</SelectItem>
+                  <SelectItem value="HR">HR</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div className="w-full space-y-1.5 md:w-auto">
-            <Label className="text-sm text-gray-600">Line</Label>
-            <Select onValueChange={setLineFilter}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All">All</SelectItem>
-                <SelectItem value="Small Part">Small Part</SelectItem>
-                <SelectItem value="Assembly">Assembly</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            <div className="w-full space-y-1.5 md:w-auto">
+              <Label className="text-sm text-gray-600">Line</Label>
+              <Select onValueChange={setLineFilter}>
+                <SelectTrigger className="w-full md:w-[200px]">
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All</SelectItem>
+                  <SelectItem value="Small Part">Small Part</SelectItem>
+                  <SelectItem value="Assembly">Assembly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div className="w-full space-y-1.5 md:w-auto">
-            <Label className="text-sm text-gray-600">Document No.</Label>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Enter document number"
-                className="w-full md:w-[200px]"
-                value={docNoFilter}
-                onChange={(e) => setDocNoFilter(e.target.value)}
-              />
-              <Button
-                onClick={handleSearch}
-                className="flex items-center rounded bg-white/40 text-black/70 hover:bg-black/10"
-              >
+            <div className="w-full space-y-1.5 md:w-auto">
+              <Label className="text-sm text-gray-600">Document No.</Label>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Enter document number"
+                  className="w-full md:w-[200px]"
+                  value={docNoFilter}
+                  onChange={(e) => setDocNoFilter(e.target.value)}
+                />
+                <Button
+                  onClick={handleSearch}
+                  className="flex items-center rounded bg-white/40 text-black/70 hover:bg-black/10"
+                >
+                  <div className="flex cursor-pointer items-center gap-2">
+                    <Search className="size-4" />
+                    <span>Search</span>
+                  </div>
+                </Button>
+              </div>
+            </div>
+
+            <div className="w-full md:ml-auto md:w-auto p-5">
+              <Button className="flex w-full items-center rounded bg-red-700 text-white hover:bg-red-800 md:w-auto">
                 <div className="flex cursor-pointer items-center gap-2">
-                  <Search className="size-4" />
-                  <span>Search</span>
+                  <Download className="size-4" />
+                  <span>Download</span>
                 </div>
               </Button>
             </div>
           </div>
-
-          <div className="w-full md:ml-auto md:w-auto">
-            <Button className="flex w-full items-center rounded bg-red-700 text-white hover:bg-red-800 md:w-auto">
-              <div className="flex cursor-pointer items-center gap-2">
-                <Download className="size-4" />
-                <span>Download</span>
-              </div>
-            </Button>
-          </div>
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <TableElement>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[70px]">No.</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Next Approval</TableHead>
-                <TableHead>Document No</TableHead>
-                <TableHead>main Description</TableHead>
-                <TableHead>Divisi</TableHead>
-                <TableHead>Line</TableHead>
-                <TableHead className="w-[100px]">Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredApprovals.map((doc, index) => (
-                <TableRow key={doc.id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`rounded px-2 py-0.5 text-xs font-medium ${
-                        doc.status === 'Completed'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-red-100 text-red-700'
-                      }`}
-                    >
-                      {doc.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>{doc.nextApproval}</TableCell>
-                  <TableCell>{doc.documentNo}</TableCell>
-                  <TableCell>{doc.mainDescription}</TableCell>
-                  <TableCell>{doc.div}</TableCell>
-                  <TableCell>{doc.line}</TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="icon" className="size-8">
-                        <Pencil className="size-4" />
-                      </Button>
-
-                      <Dialog>
-                        <DialogTrigger asChild></DialogTrigger>
-                        <ConfirmationDialog
-                          title="Delete Element"
-                          triggerButton={
-                            <Button variant="ghost">
-                              <Trash2 className="size-4" />
-                            </Button>
-                          }
-                          confirmButton={
-                            <Button variant="destructive">Delete</Button>
-                          }
-                        />
-                      </Dialog>
-                    </div>
-                  </TableCell>
+        <div className="overflow-x-auto rounded p-2 bg-white">
+          <div>
+            <TableElement className="justify-center">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[70px] text-center">No.</TableHead>
+                  <TableHead className="text-center">Status</TableHead>
+                  <TableHead className="text-center">Next Approval</TableHead>
+                  <TableHead className="text-center">Document No</TableHead>
+                  <TableHead className="text-center">
+                    Main Description
+                  </TableHead>
+                  <TableHead className="text-center">Divisi</TableHead>
+                  <TableHead className="text-center">Line</TableHead>
+                  <TableHead className="w-[100px] text-center">
+                    Action
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </TableElement>
-        </div>
-
-        {/* Pagination */}
-        <div className="flex items-center justify-between bg-white px-4 py-5">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handlePrevious}
-            disabled={currentPage === 1}
-          >
-            <div className="flex cursor-pointer items-center">
-              <ChevronLeft className="size-4" />
-              <span></span>
-            </div>
-          </Button>
-
-          <div className="flex items-center gap-1">
-            <span className="text-sm text-gray-700">
-              {currentPage} of {totalPages}
-            </span>
+              </TableHeader>
+              <TableBody>
+                {filteredApprovals.map((doc, index) => (
+                  <TableRow key={doc.id}>
+                    <TableCell className="text-center align-middle">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="text-center align-middle">
+                      <span
+                        className={`rounded px-2 py-0.5 text-xs font-medium ${
+                          doc.status === 'Completed'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-red-100 text-red-700'
+                        }`}
+                      >
+                        {doc.status}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-center align-middle">
+                      {doc.nextApproval}
+                    </TableCell>
+                    <TableCell className="text-center align-middle">
+                      {doc.documentNo}
+                    </TableCell>
+                    <TableCell className="text-center align-middle">
+                      {doc.mainDescription}
+                    </TableCell>
+                    <TableCell className="text-center align-middle">
+                      {doc.div}
+                    </TableCell>
+                    <TableCell className="text-center align-middle">
+                      {doc.line}
+                    </TableCell>
+                    <TableCell className="text-center align-middle">
+                      <div className="flex justify-center gap-2">
+                        <Button variant="ghost" size="icon" className="size-8">
+                          <Pencil className="size-4" />
+                        </Button>
+                        <Dialog>
+                          <DialogTrigger asChild></DialogTrigger>
+                          <ConfirmationDialog
+                            title="Delete Element"
+                            triggerButton={
+                              <Button variant="ghost">
+                                <Trash2 className="size-4" />
+                              </Button>
+                            }
+                            confirmButton={
+                              <Button variant="destructive">Delete</Button>
+                            }
+                          />
+                        </Dialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </TableElement>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleNext}
-            disabled={currentPage === totalPages}
-          >
-            <div className="flex cursor-pointer items-center">
-              <ChevronRight className="size-4" />
-              <span></span>
+
+          {/* Pagination */}
+          <div className="flex items-center justify-between bg-white px-4 py-5">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePrevious}
+              disabled={currentPage === 1}
+            >
+              <div className="flex cursor-pointer items-center">
+                <ChevronLeft className="size-4" />
+                <span></span>
+              </div>
+            </Button>
+
+            <div className="flex items-center gap-1">
+              <span className="text-sm text-gray-700">
+                {currentPage} of {totalPages}
+              </span>
             </div>
-          </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+            >
+              <div className="flex cursor-pointer items-center">
+                <ChevronRight className="size-4" />
+                <span></span>
+              </div>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

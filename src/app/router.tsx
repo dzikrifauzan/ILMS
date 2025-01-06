@@ -93,6 +93,16 @@ export const createAppRouter = () =>
           ErrorBoundary: AppRootErrorBoundary,
         },
         {
+          path: paths.app.standardWork.Yamazumi.path,
+          lazy: async () => {
+            const { Yamazumi } = await import('./routes/app/yamazumi');
+            return {
+              Component: Yamazumi,
+            };
+          },
+          ErrorBoundary: AppRootErrorBoundary,
+        },
+        {
           path: paths.app.masterData.JobCategories.path,
           lazy: async () => {
             const { JobCategoriesTable } = await import(
