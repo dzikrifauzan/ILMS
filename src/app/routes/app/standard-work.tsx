@@ -174,7 +174,7 @@ export function DocumentTable() {
           <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Status</Label>
             <Select onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px] bg-white">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -258,7 +258,7 @@ export function DocumentTable() {
           </div>
         </div>
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-white rounded">
           <TableElement>
             <TableHeader>
               <TableRow>
@@ -317,7 +317,7 @@ export function DocumentTable() {
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between px-2 py-10">
+        <div className="flex items-center justify-between ">
           <Button
             variant="outline"
             size="sm"
