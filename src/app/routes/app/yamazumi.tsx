@@ -1,13 +1,20 @@
 'use client';
 
-import { Bar, BarChart, XAxis, YAxis } from 'recharts';
+import { useState } from 'react';
 
+import { Bar, BarChart, XAxis, YAxis } from 'recharts';
+import { Filter } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ChartContainer } from '@/components/ui/chart';
-import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Search, Trash } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const data = [
   {
@@ -41,50 +48,11 @@ const data = [
 ];
 
 export function Yamazumi() {
-  const [filters, setFilters] = useState({
-    category: '',
-    elementId: '',
-    elementName: '',
-    unit: '',
-  });
-
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [id]: value,
-    }));
-  };
-
-  const handleClear = () => {
-    setFilters({
-      category: '',
-      elementId: '',
-      elementName: '',
-      unit: '',
-    });
-    setFilteredElements([]);
-  };
-
   const [filteredElements, setFilteredElements] = useState<any[]>([]);
-
-  const handleSearch = () => {
-    const filtered = data.filter((element) => {
-      return (
-        (filters.category === '' || element.name.includes(filters.category)) &&
-        (filters.elementId === '' ||
-          element.name.includes(filters.elementId)) &&
-        (filters.elementName === '' ||
-          element.name.includes(filters.elementName)) &&
-        (filters.unit === '' || element.name.includes(filters.unit))
-      );
-    });
-    setFilteredElements(filtered);
-  };
 
   return (
     <div
-      className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
+      className="overflow-y-scroll rounded-3xl bg-gray-100 p-5"
       style={{
         height: 'calc(100vh - 40px)',
         margin: '20px',
@@ -147,92 +115,105 @@ export function Yamazumi() {
             </BarChart>
           </ChartContainer>
         </Card>
-        <div className="h-fit w-[250px] space-y-4 rounded-lg bg-white p-4">
-          {/* <div className="p-4 bg-gray-100 rounded-lg"> */}
-          <h3 className="p-4 bg-gray-100 rounded-lg">Filter</h3>
-          {/* </div> */}
+        <div className="w-[250px] space-y-4 rounded-lg bg-white p-4">
+          <div className="flex items-center gap-2">
+            <Filter className="size-4" />
+            <h3 className="font-medium">Filter</h3>
+          </div>
           <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="category"
-                className="mb-1 block text-sm text-gray-600"
-              >
-                Category
+            <div className="space-y-2">
+              <label htmlFor="plant" className="text-sm font-medium">
+                Plant
               </label>
-              <Input
-                id="category"
-                placeholder="category"
-                className="bg-white"
-                value={filters.category}
-                onChange={handleFilterChange}
-              />
+              <Select>
+                <SelectTrigger id="plant" className="bg-white">
+                  <SelectValue placeholder="None" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="plant1">Plant 1</SelectItem>
+                  <SelectItem value="plant2">Plant 2</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label
-                htmlFor="elementId"
-                className="mb-1 block text-sm text-gray-600"
-              >
-                Element ID
+
+            <div className="space-y-2">
+              <label htmlFor="sublocation" className="text-sm font-medium">
+                Sub Location
               </label>
-              <Input
-                id="elementId"
-                placeholder="Element ID"
-                className="bg-white"
-                value={filters.elementId}
-                onChange={handleFilterChange}
-                type="text"
-              />
+              <Select>
+                <SelectTrigger id="sublocation" className="bg-white">
+                  <SelectValue placeholder="None" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="loc1">Location 1</SelectItem>
+                  <SelectItem value="loc2">Location 2</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label
-                htmlFor="elementName"
-                className="mb-1 block text-sm text-gray-600"
-              >
-                Element Name
+
+            <div className="space-y-2">
+              <label htmlFor="division" className="text-sm font-medium">
+                Division
               </label>
-              <Input
-                id="elementName"
-                placeholder="Element Name"
-                className="bg-white"
-                value={filters.elementName}
-                onChange={handleFilterChange}
-              />
+              <Select>
+                <SelectTrigger id="division" className="bg-white">
+                  <SelectValue placeholder="None" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="div1">Division 1</SelectItem>
+                  <SelectItem value="div2">Division 2</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label
-                htmlFor="unit"
-                className="mb-1 block text-sm text-gray-600"
-              >
-                Unit
+
+            <div className="space-y-2">
+              <label htmlFor="department" className="text-sm font-medium">
+                Department
               </label>
-              <Input
-                id="unit"
-                placeholder="Unit"
-                className="bg-white"
-                value={filters.unit}
-                onChange={handleFilterChange}
-              />
+              <Select>
+                <SelectTrigger id="department" className="bg-white">
+                  <SelectValue placeholder="None" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="dept1">Department 1</SelectItem>
+                  <SelectItem value="dept2">Department 2</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div className="flex justify-center gap-2">
-              <Button
-                onClick={handleClear}
-                className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800"
-              >
-                <div className="flex cursor-pointer items-center gap-2">
-                  <Trash className="size-4" />
-                  <span>Clear</span>
-                </div>
-              </Button>
-              <Button
-                onClick={handleSearch}
-                className="flex items-center rounded bg-white px-1 text-black hover:bg-white/30"
-              >
-                <div className="flex cursor-pointer items-center gap-2">
-                  <Search className="size-4" />
-                  <span>Search</span>
-                </div>
-              </Button>
+
+            <div className="space-y-2">
+              <label htmlFor="section" className="text-sm font-medium">
+                Section
+              </label>
+              <Select>
+                <SelectTrigger id="section" className="bg-white">
+                  <SelectValue placeholder="None" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sec1">Section 1</SelectItem>
+                  <SelectItem value="sec2">Section 2</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
+
+            <div className="space-y-2">
+              <label htmlFor="line" className="text-sm font-medium">
+                Line
+              </label>
+              <Select>
+                <SelectTrigger id="line" className="bg-white">
+                  <SelectValue placeholder="None" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="line1">Line 1</SelectItem>
+                  <SelectItem value="line2">Line 2</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button className="w-full bg-red-600 hover:bg-red-700">
+              Search
+            </Button>
           </div>
         </div>
       </div>
