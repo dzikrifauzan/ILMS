@@ -176,60 +176,61 @@ export const JobCategoriesTable = () => {
           </div>
         </Button>
       </div>
-      <div className="flex flex-row gap-4">
-        <TableElement>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[50px]">No.</TableHead>
-              <TableHead>Document No.</TableHead>
-              <TableHead>Document Title</TableHead>
-              <TableHead>Created By</TableHead>
-              <TableHead>Created Date</TableHead>
-              <TableHead>Change By</TableHead>
-              <TableHead>Change Date</TableHead>
-              <TableHead className="w-[100px]">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredCategories.map((doc: JobCategory, index: number) => (
-              <TableRow key={doc.id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{doc.categoryId}</TableCell>
-                <TableCell>{doc.category}</TableCell>
-
-                <TableCell>{doc.createdBy}</TableCell>
-                <TableCell>{doc.createdDate}</TableCell>
-                <TableCell>{doc.changedBy}</TableCell>
-                <TableCell>{doc.changeDate}</TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="size-8">
-                      <Pencil className="size-4" />
-                    </Button>
-
-                    <Dialog>
-                      <DialogTrigger asChild></DialogTrigger>
-                      <ConfirmationDialog
-                        title="Delete Element"
-                        triggerButton={
-                          <Button variant="ghost">
-                            <Trash2 className="size-4" />
-                          </Button>
-                        }
-                        confirmButton={
-                          <Button variant="destructive">Delete</Button>
-                        }
-                      />
-                    </Dialog>
-                  </div>
-                </TableCell>
+      <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="flex items-center gap-4 w-full bg-white rounded-l">
+          <TableElement>
+            <TableHeader className="bg-gray-300">
+              <TableRow>
+                <TableHead className="w-[50px]">No.</TableHead>
+                <TableHead>Document No.</TableHead>
+                <TableHead>Document Title</TableHead>
+                <TableHead>Created By</TableHead>
+                <TableHead>Created Date</TableHead>
+                <TableHead>Change By</TableHead>
+                <TableHead>Change Date</TableHead>
+                <TableHead className="w-[100px]">Action</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </TableElement>
+            </TableHeader>
+            <TableBody>
+              {filteredCategories.map((doc: JobCategory, index: number) => (
+                <TableRow key={doc.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{doc.categoryId}</TableCell>
+                  <TableCell>{doc.category}</TableCell>
 
+                  <TableCell>{doc.createdBy}</TableCell>
+                  <TableCell>{doc.createdDate}</TableCell>
+                  <TableCell>{doc.changedBy}</TableCell>
+                  <TableCell>{doc.changeDate}</TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button variant="ghost" size="icon" className="size-8">
+                        <Pencil className="size-4" />
+                      </Button>
+
+                      <Dialog>
+                        <DialogTrigger asChild></DialogTrigger>
+                        <ConfirmationDialog
+                          title="Delete Element"
+                          triggerButton={
+                            <Button variant="ghost">
+                              <Trash2 className="size-4" />
+                            </Button>
+                          }
+                          confirmButton={
+                            <Button variant="destructive">Delete</Button>
+                          }
+                        />
+                      </Dialog>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </TableElement>
+        </div>
         {/* Filter */}
-        <div className="h-fit w-[250px] space-y-4 rounded-lg bg-gray-100 p-4">
+        <div className="w-[250px] space-y-4 rounded bg-white p-4">
           <div className="text-sm font-medium">Filter</div>
           <div className="space-y-4">
             <div>
@@ -285,6 +286,7 @@ export const JobCategoriesTable = () => {
           </div>
         </div>
       </div>
+
       {/* Pagination */}
       <div className="flex items-center justify-between px-2 py-20">
         <Button
