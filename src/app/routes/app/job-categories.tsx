@@ -10,15 +10,20 @@ import {
   Trash,
 } from 'lucide-react';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
   ConfirmationDialog,
   Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   TableBody,
   TableCell,
@@ -27,95 +32,25 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { api } from '@/lib/api-client';
 
 interface JobCategory {
   id: number;
-  categoryId: string;
-  category: string;
-  createdBy: string;
-  createdDate: string;
-  changedBy: string;
-  changeDate: string;
+  category_id: string;
+  category_name: string;
+  created_by: string;
+  created_dt: string;
+  changed_by: string;
+  changed_dt: string;
 }
 
 export const JobCategoriesTable = () => {
-  const categories: JobCategory[] = [
-    {
-      id: 1,
-      categoryId: 'PC202412000009',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 2,
-      categoryId: 'PC202412000008',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 3,
-      categoryId: 'PC202412000007',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 4,
-      categoryId: 'PC202412000006',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 5,
-      categoryId: 'PC202412000005',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 6,
-      categoryId: 'PC202412000004',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 7,
-      categoryId: 'PC202412000003',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-    {
-      id: 8,
-      categoryId: 'PC202412000002',
-      category: 'Supply Point A',
-      createdBy: 'Tester',
-      createdDate: '10 Dec 2024',
-      changedBy: 'Admin',
-      changeDate: '10 Dec 2024',
-    },
-  ];
   const totalPages = 10;
+  const [formData, setFormData] = useState({
+    category_name: '',
+  });
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [documents, setDocuments] = useState<JobCategory[]>([]);
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -123,40 +58,42 @@ export const JobCategoriesTable = () => {
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
-  const [filters, setFilters] = useState({
-    categoryId: '',
-    category: '',
-  });
 
-  const [filteredCategories, setFilteredCategories] =
-    useState<JobCategory[]>(categories);
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [id]: value,
-    }));
+  const fetchDocumentTable = async () => {
+    try {
+      const response = await api.get(`/gentani/master-data/job-categories`);
+      console.log('ini respon', response);
+      setDocuments(response.data);
+    } catch (error) {
+      console.error('Connection Error', error);
+    }
   };
 
-  const handleSearch = () => {
-    const filtered = categories.filter((category) => {
-      return (
-        (filters.category === '' ||
-          category.category.includes(filters.category)) &&
-        (filters.categoryId === '' ||
-          category.categoryId.includes(filters.categoryId))
-      );
-    });
-    setFilteredCategories(filtered);
+  const handleDelete = async (id: string) => {
+    try {
+      await api.delete(`/gentani/master-data/job-category/`, {
+        data: { category_id: id },
+      });
+      fetchDocumentTable();
+    } catch (error) {
+      console.error('Connection Error', error);
+    }
   };
 
-  const handleClear = () => {
-    setFilters({
-      categoryId: '',
-      category: '',
-    });
-    setFilteredCategories(categories);
+  const handleAddCategory = async (category_name: string) => {
+    try {
+      await api.post('/gentani/master-data/job-category', {
+        category_name: category_name,
+      });
+      fetchDocumentTable();
+    } catch (error) {
+      console.error('Connection Error', error);
+    }
   };
+
+  useEffect(() => {
+    fetchDocumentTable();
+  }, []);
 
   return (
     <div
@@ -169,12 +106,46 @@ export const JobCategoriesTable = () => {
     >
       <div className="mb-6 flex items-center justify-between">
         <div className="text-xl font-semibold">Job Categories</div>
-        <Button className="rounded bg-red-700 px-1 text-white hover:bg-red-800">
-          <div className="flex cursor-pointer items-center gap-2">
-            <Plus className="size-4" />
-            <span>Add</span>
-          </div>
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="rounded bg-red-700 px-1 text-white hover:bg-red-800">
+              <div className="flex cursor-pointer items-center gap-2">
+                <Plus className="size-4" />
+                <span>Add</span>
+              </div>
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New Job Category</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="category_name" className="text-right">
+                  Category Name
+                </Label>
+                <Input
+                  id="category_name"
+                  className="col-span-3"
+                  value={formData.category_name}
+                  onChange={(e) =>
+                    setFormData({ category_name: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={() => {
+                  handleAddCategory(formData.category_name);
+                  close();
+                }}
+              >
+                Save
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="flex items-center gap-4 w-full bg-white rounded-l">
@@ -183,7 +154,7 @@ export const JobCategoriesTable = () => {
               <TableRow>
                 <TableHead className="w-[50px]">No.</TableHead>
                 <TableHead>Document No.</TableHead>
-                <TableHead>Document Title</TableHead>
+                <TableHead>Category Name</TableHead>
                 <TableHead>Created By</TableHead>
                 <TableHead>Created Date</TableHead>
                 <TableHead>Change By</TableHead>
@@ -192,16 +163,31 @@ export const JobCategoriesTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredCategories.map((doc: JobCategory, index: number) => (
+              {documents.map((doc: JobCategory, index: number) => (
                 <TableRow key={doc.id}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{doc.categoryId}</TableCell>
-                  <TableCell>{doc.category}</TableCell>
-
-                  <TableCell>{doc.createdBy}</TableCell>
-                  <TableCell>{doc.createdDate}</TableCell>
-                  <TableCell>{doc.changedBy}</TableCell>
-                  <TableCell>{doc.changeDate}</TableCell>
+                  <TableCell>{doc.category_id}</TableCell>
+                  <TableCell>{doc.category_name}</TableCell>
+                  <TableCell>{doc.created_by}</TableCell>
+                  <TableCell>
+                    {doc.created_dt
+                      ? new Date(doc.created_dt).toLocaleDateString('id-ID', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })
+                      : '-'}
+                  </TableCell>
+                  <TableCell>{doc.changed_by || '-'}</TableCell>
+                  <TableCell>
+                    {doc.changed_dt
+                      ? new Date(doc.changed_dt).toLocaleDateString('id-ID', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })
+                      : '-'}
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="icon" className="size-8">
@@ -218,14 +204,19 @@ export const JobCategoriesTable = () => {
                             </Button>
                           }
                           confirmButton={
-                            <Button variant="destructive">Delete</Button>
+                            <Button
+                              onClick={() => handleDelete(doc.category_id)}
+                              variant="destructive"
+                            >
+                              Delete
+                            </Button>
                           }
                         />
                       </Dialog>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))}{' '}
             </TableBody>
           </TableElement>
         </div>
@@ -244,8 +235,6 @@ export const JobCategoriesTable = () => {
                 id="category"
                 placeholder="Enter category name"
                 className="bg-white"
-                value={filters.category}
-                onChange={handleFilterChange}
               />
             </div>
             <div>
@@ -259,24 +248,16 @@ export const JobCategoriesTable = () => {
                 id="categoryId"
                 placeholder="Enter category ID"
                 className="bg-white"
-                value={filters.categoryId}
-                onChange={handleFilterChange}
               />
             </div>
             <div className="flex justify-center gap-2">
-              <Button
-                onClick={handleClear}
-                className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800"
-              >
+              <Button className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800">
                 <div className="flex cursor-pointer items-center gap-2">
                   <Trash className="size-4" />
                   <span>Clear</span>
                 </div>
               </Button>
-              <Button
-                onClick={handleSearch}
-                className="flex items-center rounded bg-white px-1 text-black hover:bg-white/30"
-              >
+              <Button className="flex items-center rounded bg-white px-1 text-black hover:bg-white/30">
                 <div className="flex cursor-pointer items-center gap-2">
                   <Search className="size-4" />
                   <span>Search</span>

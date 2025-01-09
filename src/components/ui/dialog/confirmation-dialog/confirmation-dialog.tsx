@@ -77,7 +77,9 @@ export const ConfirmationDialog = ({
         </div>
 
         <DialogFooter>
-          {confirmButton}
+          <Button variant="destructive" onClick={close}>
+            {confirmButton}
+          </Button>
           <Button ref={cancelButtonRef} variant="outline" onClick={close}>
             {cancelButtonText}
           </Button>

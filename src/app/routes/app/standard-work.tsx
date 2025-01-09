@@ -9,7 +9,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,136 +33,120 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { env } from 'process';
 import { api } from '@/lib/api-client';
-import { useEffect } from 'react';
 
 type Document = {
   id: number;
   documentNo: string;
   documentTitle: string;
   status: string;
-  createdBy: string;
+  created_by: string;
   createdDate: string;
   changeBy: string;
   changeDate: string;
 };
 
-const documents: Document[] = [
-  {
-    id: 1,
-    documentNo: 'PC202412000001',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 2,
-    documentNo: 'PC202412000002',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 3,
-    documentNo: 'PC202412000003',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 4,
-    documentNo: 'PC202412000004',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 5,
-    documentNo: 'PC202412000005',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 6,
-    documentNo: 'PC202412000006',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 7,
-    documentNo: 'PC202412000007',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 8,
-    documentNo: 'PC202412000008',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-  {
-    id: 9,
-    documentNo: 'PC202412000009',
-    documentTitle: 'Supply Route A',
-    status: 'Draft',
-    createdBy: 'Admin',
-    createdDate: '10 Dec 2024',
-    changeBy: 'Admin',
-    changeDate: '10 Dec 2024',
-  },
-];
+// const documents: Document[] = [
+//   {
+//     id: 1,
+//     documentNo: 'PC202412000001',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 2,
+//     documentNo: 'PC202412000002',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 3,
+//     documentNo: 'PC202412000003',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 4,
+//     documentNo: 'PC202412000004',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 5,
+//     documentNo: 'PC202412000005',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 6,
+//     documentNo: 'PC202412000006',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 7,
+//     documentNo: 'PC202412000007',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 8,
+//     documentNo: 'PC202412000008',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+//   {
+//     id: 9,
+//     documentNo: 'PC202412000009',
+//     documentTitle: 'Supply Route A',
+//     status: 'Draft',
+//     createdBy: 'Admin',
+//     createdDate: '10 Dec 2024',
+//     changeBy: 'Admin',
+//     changeDate: '10 Dec 2024',
+//   },
+// ];
 
 export function DocumentTable() {
-  const [documents, setDocuments] = useState ([]);
-  const fetchDocumentTable = async () => {
-    try {
-      const response = await api.get(`/gentani/master-data/job-categories`);
-      console.log("ini respon",response)
-      setDocuments(response.data);
-    }catch (error){
-      console.error('Connection Error')
-    }
-  };
-  
-  useEffect(()=> {
-    fetchDocumentTable();
-  },[]);
-
   const totalPages = 10;
+  const [documents, setDocuments] = useState<Document[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [filteredDocument, setFilteredApprovals] =
     useState<Document[]>(documents);
-
+  console.log('ini response document', documents);
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -172,11 +156,24 @@ export function DocumentTable() {
   };
   const handleSearch = () => {
     const filteredData = documents.filter((item) => {
-      // return statusFilter === 'All' || item.status === statusFilter;
+      return statusFilter === 'All' || item.status === statusFilter;
     });
     setFilteredApprovals(filteredData);
   };
 
+  const fetchDocumentTable = async () => {
+    try {
+      const response = await api.get(`/gentani/master-data/job-categories`);
+      console.log('ini respon', response);
+      setDocuments(response.data);
+    } catch (error) {
+      console.error('Connection Error');
+    }
+  };
+
+  useEffect(() => {
+    fetchDocumentTable();
+  }, []);
   return (
     <div
       className="rounded-3xl bg-gray-100 p-5 overflow-y-scroll"
@@ -192,7 +189,7 @@ export function DocumentTable() {
           <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Status</Label>
             <Select onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[200px] bg-white">
+              <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -276,7 +273,7 @@ export function DocumentTable() {
           </div>
         </div>
         {/* Table */}
-        <div className="overflow-x-auto bg-white rounded">
+        <div className="overflow-x-auto">
           <TableElement>
             <TableHeader>
               <TableRow>
@@ -292,7 +289,7 @@ export function DocumentTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredDocument.map((doc: Document, index: number) => (
+              {documents.map((doc: Document, index: number) => (
                 <TableRow key={doc.id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{doc.documentNo}</TableCell>
@@ -302,7 +299,7 @@ export function DocumentTable() {
                       {doc.status}
                     </span>
                   </TableCell>
-                  <TableCell>{doc.createdBy}</TableCell>
+                  <TableCell>{doc.created_by}</TableCell>
                   <TableCell>{doc.createdDate}</TableCell>
                   <TableCell>{doc.changeBy}</TableCell>
                   <TableCell>{doc.changeDate}</TableCell>
@@ -335,7 +332,7 @@ export function DocumentTable() {
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between ">
+        <div className="flex items-center justify-between px-2 py-10">
           <Button
             variant="outline"
             size="sm"
