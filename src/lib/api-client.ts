@@ -13,7 +13,7 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
     config.headers.Accept = 'application/json';
   }
 
-  config.withCredentials = true;
+  // config.withCredentials = true;
   return config;
 }
 
@@ -45,7 +45,7 @@ export const setupAxiosInterceptors = (store: Store) => {
           searchParams.get('redirectTo') || window.location.pathname;
         window.location.href = paths.auth.login.getHref(redirectTo);
       }
-      log('error', error);
+      console.log('error', error);
       return Promise.reject(error);
     },
   );

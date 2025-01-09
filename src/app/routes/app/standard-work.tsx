@@ -33,6 +33,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { env } from 'process';
+import { api } from '@/lib/api-client';
+import { useEffect } from 'react';
 
 type Document = {
   id: number;
@@ -139,6 +142,21 @@ const documents: Document[] = [
 ];
 
 export function DocumentTable() {
+  const [documents, setDocuments] = useState ([]);
+  const fetchDocumentTable = async () => {
+    try {
+      const response = await api.get(`/gentani/master-data/job-categories`);
+      console.log("ini respon",response)
+      setDocuments(response.data);
+    }catch (error){
+      console.error('Connection Error')
+    }
+  };
+  
+  useEffect(()=> {
+    fetchDocumentTable();
+  },[]);
+
   const totalPages = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>('All');
@@ -154,7 +172,7 @@ export function DocumentTable() {
   };
   const handleSearch = () => {
     const filteredData = documents.filter((item) => {
-      return statusFilter === 'All' || item.status === statusFilter;
+      // return statusFilter === 'All' || item.status === statusFilter;
     });
     setFilteredApprovals(filteredData);
   };
@@ -174,7 +192,7 @@ export function DocumentTable() {
           <div className="w-full space-y-1.5 md:w-auto">
             <Label className="text-sm text-gray-600">Status</Label>
             <Select onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px] bg-white">
                 <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
@@ -258,7 +276,7 @@ export function DocumentTable() {
           </div>
         </div>
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-white rounded">
           <TableElement>
             <TableHeader>
               <TableRow>
@@ -317,7 +335,7 @@ export function DocumentTable() {
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between px-2 py-10">
+        <div className="flex items-center justify-between ">
           <Button
             variant="outline"
             size="sm"
