@@ -10,7 +10,7 @@ import {
   Trash,
 } from 'lucide-react';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -27,153 +27,35 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { api } from '@/lib/api-client';
 
 interface JobElement {
   id: number;
-  elementId: string;
-  category: string;
-  elementName: string;
-  manual: string;
-  walking: string;
-  driving: string;
-  createdBy: string;
-  createdDate: string;
+  element_id: string;
+  category_name: string;
+  element_name: string;
+  time_manual: string;
+  time_walking: string;
+  time_driving: string;
+  created_by: string;
+  created_dt: string;
 }
 
 export const JobElementTable = () => {
-  const elements: JobElement[] = [
-    {
-      id: 1,
-      elementId: 'JC10412/20/000009',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-    {
-      id: 2,
-      elementId: 'JC10412/20/000008',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-    {
-      id: 3,
-      elementId: 'JC10412/20/000007',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-    {
-      id: 4,
-      elementId: 'JC10412/20/000006',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-    {
-      id: 5,
-      elementId: 'JC10412/20/000005',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-    {
-      id: 6,
-      elementId: 'JC10412/20/000004',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-    {
-      id: 7,
-      elementId: 'JC10412/20/000003',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-    {
-      id: 8,
-      elementId: 'JC10412/20/000002',
-      category: 'Preparation',
-      elementName: 'Line Auditor',
-      manual: '10 kg',
-      walking: '10M',
-      driving: '10M',
-      createdBy: 'Admin',
-      createdDate: '20 Dec 2024',
-    },
-  ];
-
-  const [filters, setFilters] = useState({
-    category: '',
-    elementId: '',
-    elementName: '',
-    unit: '',
-  });
-
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [id]: value,
-    }));
+  const [dataJobElement, setDataJobElement] = useState<JobElement[]>([]);
+  const fetchJobElement = async () => {
+    try {
+      const response = await api.get(`/gentani/master-data/job-elements`);
+      console.log('ini respon job element', response);
+      setDataJobElement(response.data);
+    } catch (error) {
+      console.error('Connection Error', error);
+    }
   };
 
-  const handleClear = () => {
-    setFilters({
-      category: '',
-      elementId: '',
-      elementName: '',
-      unit: '',
-    });
-    setFilteredElements(elements);
-  };
-  const [filteredElements, setFilteredElements] =
-    useState<JobElement[]>(elements);
-
-  const handleSearch = () => {
-    const filtered = elements.filter((element) => {
-      return (
-        (filters.category === '' ||
-          element.category.includes(filters.category)) &&
-        (filters.elementId === '' ||
-          element.elementId.includes(filters.elementId)) &&
-        (filters.elementName === '' ||
-          element.elementName.includes(filters.elementName)) &&
-        (filters.unit === '' || element.manual.includes(filters.unit)) // Misalnya, "unit" cocok dengan "manual".
-      );
-    });
-    setFilteredElements(filtered);
-  };
-
+  useEffect(() => {
+    fetchJobElement();
+  }, []);
   const totalPages = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -220,17 +102,17 @@ export const JobElementTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredElements.map((element: JobElement, index: number) => (
+            {dataJobElement.map((element: JobElement, index: number) => (
               <TableRow key={element.id}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{element.elementId}</TableCell>
-                <TableCell>{element.category}</TableCell>
-                <TableCell>{element.elementName}</TableCell>
-                <TableCell>{element.manual}</TableCell>
-                <TableCell>{element.walking}</TableCell>
-                <TableCell>{element.driving}</TableCell>
-                <TableCell>{element.createdBy}</TableCell>
-                <TableCell>{element.createdDate}</TableCell>
+                <TableCell>{element.element_id}</TableCell>
+                <TableCell>{element.category_name}</TableCell>
+                <TableCell>{element.element_name}</TableCell>
+                <TableCell>{element.time_manual}</TableCell>
+                <TableCell>{element.time_walking}</TableCell>
+                <TableCell>{element.time_driving}</TableCell>
+                <TableCell>{element.created_by}</TableCell>
+                <TableCell>{element.created_dt}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
                     <Button variant="ghost" size="icon" className="size-8">
@@ -272,8 +154,6 @@ export const JobElementTable = () => {
                 id="category"
                 placeholder="category"
                 className="bg-white"
-                value={filters.category}
-                onChange={handleFilterChange}
               />
             </div>
             <div>
@@ -287,8 +167,6 @@ export const JobElementTable = () => {
                 id="elementId"
                 placeholder="Element ID"
                 className="bg-white"
-                value={filters.elementId}
-                onChange={handleFilterChange}
                 type="text"
               />
             </div>
@@ -303,8 +181,6 @@ export const JobElementTable = () => {
                 id="elementName"
                 placeholder="Element Name"
                 className="bg-white"
-                value={filters.elementName}
-                onChange={handleFilterChange}
               />
             </div>
             <div>
@@ -314,28 +190,16 @@ export const JobElementTable = () => {
               >
                 Unit
               </label>
-              <Input
-                id="unit"
-                placeholder="Unit"
-                className="bg-white"
-                value={filters.unit}
-                onChange={handleFilterChange}
-              />
+              <Input id="unit" placeholder="Unit" className="bg-white" />
             </div>
             <div className="flex justify-center gap-2">
-              <Button
-                onClick={handleClear}
-                className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800"
-              >
+              <Button className="flex items-center rounded bg-red-700 px-1 text-white hover:bg-red-800">
                 <div className="flex cursor-pointer items-center gap-2">
                   <Trash className="size-4" />
                   <span>Clear</span>
                 </div>
               </Button>
-              <Button
-                onClick={handleSearch}
-                className="flex items-center rounded bg-white px-1 text-black hover:bg-white/30"
-              >
+              <Button className="flex items-center rounded bg-white px-1 text-black hover:bg-white/30">
                 <div className="flex cursor-pointer items-center gap-2">
                   <Search className="size-4" />
                   <span>Search</span>

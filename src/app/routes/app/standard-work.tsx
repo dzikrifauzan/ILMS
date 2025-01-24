@@ -46,99 +46,6 @@ type Document = {
   changeDate: string;
 };
 
-// const documents: Document[] = [
-//   {
-//     id: 1,
-//     documentNo: 'PC202412000001',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 2,
-//     documentNo: 'PC202412000002',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 3,
-//     documentNo: 'PC202412000003',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 4,
-//     documentNo: 'PC202412000004',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 5,
-//     documentNo: 'PC202412000005',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 6,
-//     documentNo: 'PC202412000006',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 7,
-//     documentNo: 'PC202412000007',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 8,
-//     documentNo: 'PC202412000008',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-//   {
-//     id: 9,
-//     documentNo: 'PC202412000009',
-//     documentTitle: 'Supply Route A',
-//     status: 'Draft',
-//     createdBy: 'Admin',
-//     createdDate: '10 Dec 2024',
-//     changeBy: 'Admin',
-//     changeDate: '10 Dec 2024',
-//   },
-// ];
-
 export function DocumentTable() {
   const totalPages = 10;
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -167,7 +74,7 @@ export function DocumentTable() {
       console.log('ini respon', response);
       setDocuments(response.data);
     } catch (error) {
-      console.error('Connection Error');
+      console.error('Connection Error', error);
     }
   };
 
